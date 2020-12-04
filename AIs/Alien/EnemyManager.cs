@@ -28,15 +28,13 @@ public class EnemyManager : MonoBehaviour
 
     public GameObject projectile;
 
-    public SurvivalManager gameManager;
+    public bool InSurvival = true;
 
     void Awake()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Transform>();
         AI = GetComponent<NavMeshAgent>();
         alienAnims = GetComponent<Animator>();
-        gameManager = GameObject.FindWithTag("GameController").GetComponent<SurvivalManager>();
-        gameManager.hostilesInScene++;
     }
 
     void Update()

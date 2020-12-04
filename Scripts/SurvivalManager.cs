@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class SurvivalManager : MonoBehaviour
 {
-    public bool nextWaveReady;
-    public int hostilesInScene;
+    public int score = 100;
+    
+    public TextMeshProUGUI scoreCounter;
 
     void Update()
     {
-        if(hostilesInScene <= 0)
-        {
-            nextWaveReady = true;
-        }
+        scoreCounter.text = "Score:" + score.ToString();
     }
 }

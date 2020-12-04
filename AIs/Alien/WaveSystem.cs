@@ -4,34 +4,63 @@ using UnityEngine;
 
 public class WaveSystem : MonoBehaviour
 {
-    public float timeBetweenWaves;
-    public float HostilesToCreate;
-    public float standardTimeBetweenWaves = 10f;
+    public Wave[] waves;
+    public Wave currentWave;
+    int currentWaveNumber;
+    public float StandardTimeBetweenWaves;
+    public int EnemiesLeftTillSpawn;
+    public int hostilesAlive;
 
-    public Transform theSpawner;
-    
-    public GameObject Alien;
+    public GameObject enemy;
 
-    public bool WaveHasSpawned = false;
-    public bool waveCanSpawn;
-
-    public SurvivalManager mainManager;
+    public SurvivalManager manager;
 
     void Start()
     {
-        theSpawner = gameObject.GetComponent<Transform>();
-        mainManager = GameObject.FindWithTag("GameController").GetComponent<SurvivalManager>();
+        NextWave();
     }
-
+    
     void Update()
     {
-        timeBetweenWaves -= Time.deltaTime;
-        if(timeBetweenWaves <= 0 && mainManager.nextWaveReady == true  && waveCanSpawn == true)
+        if(EnemiesLeftTillSpawn > 0 && Time.time > StandardTimeBetweenWaves)
         {
-            Instantiate(Alien, theSpawner.position, theSpawner.rotation);
-            timeBetweenWaves = standardTimeBetweenWaves;
+            EnemiesLeftTillSpawn--;
+            StandardTimeBetweenWaves = Time.time + currentWave.nextSpawnTime;
+
+            HostileHealth health = Instantiate(enemy, transform.position, Quaternion.identity).GetComponent<HostileHealth>();
+            health.onDeath += OnEnemyDeath;
         }
     }
 
+    void OnEnemyDeath()
+    {
+        print("Enemy Dead");
+        hostilesAlive--;
 
+        if(hostilesAlive <= 0)
+        {
+            NextWave();
+        }
+
+        manager.score += 100;
+    }
+
+    void NextWave()
+    {
+        currentWaveNumber++;
+        if(currentWaveNumber - 1 < waves.Length)
+        {
+            currentWave = waves[currentWaveNumber - 1];
+            EnemiesLeftTillSpawn = currentWave.NumberofEnemies;
+            hostilesAlive = EnemiesLeftTillSpawn;
+        }
+    }
+
+    [System.Serializable]
+    public class Wave
+    {
+        public int NumberofEnemies;
+        public float nextSpawnTime;
+    }
 }
+

@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class TriggerForEnemie : MonoBehaviour
 {
-    public WaveSystem[] waves;
-
-    public WaveSystem theWave;
+    public WaveSystemLevel2[] waves;
 
     void OnTriggerEnter()
     {
-        foreach(WaveSystem theWave in waves)
+        foreach(WaveSystemLevel2 theWave in waves)
         {
-            theWave.waveCanSpawn = true;
+            theWave.canSpawn = true;
         }
     }
 }

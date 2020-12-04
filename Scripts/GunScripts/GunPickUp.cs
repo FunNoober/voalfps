@@ -18,13 +18,18 @@ public class GunPickUp : MonoBehaviour
 
  public GunsAreActive theGunManager;
 
+ public bool inSurvival;
+ public int ScoreToBuy;
+ public SurvivalManager manager;
+
 
  //All Weapons
 public GameObject[] weapons;
 
  void OnTriggerEnter()
  {
-    SetParent();
+    if(!inSurvival)
+      SetParent();
  }
 
    public void SetParent()

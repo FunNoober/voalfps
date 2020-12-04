@@ -6,11 +6,13 @@ public class HostileHealth : MonoBehaviour
 {
     public float health = 50f;
 
-    public SurvivalManager mainManager;
+    public event System.Action onDeath;
+
+    public bool inSurvival = true;
     
     void Start()
     {
-        mainManager = GameObject.FindWithTag("GameController").GetComponent<SurvivalManager>();
+
     }
     
     public void TakeDamage (float amount)
@@ -25,7 +27,8 @@ public class HostileHealth : MonoBehaviour
 }
     public void Die()
     {
-      mainManager.hostilesInScene--;
+      if(onDeath != null)
+        onDeath();
       Destroy(gameObject);
     }
 }

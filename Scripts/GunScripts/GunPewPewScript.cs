@@ -24,6 +24,7 @@ public float speedModifier;
 public float runModifier;
 
 public float[] RandomPickUpAmmo;
+public float ShotGunBange;
 
 [Space]
 [Header("Ints")]
@@ -41,6 +42,7 @@ public string realoadingText;
 public string weaponType;
 public string textToDisplay;
 public string reloadBool;
+public string shootTrigger;
 
 [Space]
 [Header("GameObjectss")]
@@ -55,6 +57,7 @@ public AudioClip weaponSelectSFX;
 
 [Header("Bools")]
 public bool CanReaload = true;
+public bool isShotgun;
 
 [Tooltip("Checking If The Gun Is Full On Start")] public bool FullMagOnStart = true;
 public bool isActive;
@@ -76,6 +79,8 @@ public Color defaultColor;
 [Header("Vectors")]
 public Vector3 upRecoil;
 [SerializeField] Vector3 origRotation;
+public Transform shotGunPoint;
+
 
     //Privates
     private float nextTimeToFire = 0f;
@@ -194,9 +199,10 @@ CanReaload = false;
 
         currentAmmo--;
         shotsFired++;
+        animator.SetTrigger(shootTrigger);
 
         RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range) && !isShotgun)
         {
             Debug.Log(hit.transform.name);
 
@@ -218,9 +224,20 @@ CanReaload = false;
                 GameObject bullectHole = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal) * Quaternion.AngleAxis(90, Vector3.right));
                 Destroy(bullectHole, 20f);
             }
-
         }
-
+        if(isShotgun)
+        {
+            Collider[] results = Physics.OverlapSphere(shotGunPoint.position, ShotGunBange);
+            foreach(Collider theCollider in results)
+            {
+                
+               HostileHealth enemyHealth = theCollider.GetComponent<HostileHealth>();
+                if(enemyHealth != null)
+                {
+                    enemyHealth.TakeDamage(damage);
+                }
+            }
+        }
     }
 
     public void lightOff()

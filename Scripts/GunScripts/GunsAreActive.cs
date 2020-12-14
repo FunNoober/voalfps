@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class GunsAreActive : MonoBehaviour
 {
-    public bool[] weaponsAreActive; //1 is pistol, 2 is rifle, and 3 is shotgun
+    [Tooltip("0 is the pistol, 1 is the rifle, 2 is the shotgun, 3 is the magnum, 4 is the SAW")]public bool[] weaponsAreActive;
 }

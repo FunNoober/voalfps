@@ -9,9 +9,11 @@ public class SurvivalManager : MonoBehaviour
     public int score = 100;
     
     public TextMeshProUGUI scoreCounter;
+    public bool inSurvival;
 
     void Update()
     {
-        scoreCounter.text = "Score:" + score.ToString();
+        if(inSurvival)
+            scoreCounter.text = "Score:" + score.ToString();
     }
 }

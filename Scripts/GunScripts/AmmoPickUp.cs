@@ -23,7 +23,7 @@ void Update()
 {
     if(theGunManager.weaponsAreActive[WeaponIndex] == true)
     {
-        Debug.Log("Weapon Idex Is True");
+
     }
 }
 

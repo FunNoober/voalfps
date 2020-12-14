@@ -47,8 +47,7 @@ public class PlayerHealhAndShield : MonoBehaviour
 
     void FixedUpdate()
     {
-        Debug.Log("Health" +PlayerHealth);
-        Debug.Log("Shield" + PlayerShield);
+
     }
 
     public void TakeDamage()

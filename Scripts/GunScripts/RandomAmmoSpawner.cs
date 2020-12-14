@@ -8,7 +8,7 @@ public class RandomAmmoSpawner : MonoBehaviour
 
     public Transform thePointToSpawn;
 
-    public GameObject ammotype;
+    public GameObject[] ammotype;
 
     public float countDownTimer;
     public float maxTimer;
@@ -19,8 +19,8 @@ public class RandomAmmoSpawner : MonoBehaviour
         if(countDownTimer <= 0)
         {
             thePointToSpawn = ammoSpawners[Random.Range(0, ammoSpawners.Length)];
-            Instantiate(ammotype, thePointToSpawn.position, thePointToSpawn.rotation);
-            Debug.Log(thePointToSpawn.position);
+            GameObject ammoToSpawn = ammotype[Random.Range(0, ammotype.Length)];
+            Instantiate(ammoToSpawn, thePointToSpawn.position, thePointToSpawn.rotation);
             countDownTimer = maxTimer;
 
         }

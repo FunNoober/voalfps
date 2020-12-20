@@ -7,7 +7,9 @@ public class SceneMaster : MonoBehaviour
 {
     public Animator fadeOut;
     public GameObject Menu;
-    
+
+    public static bool hasLoadedData;
+
     public void LoadScene(int index)
     {
         SceneManager.LoadScene(index);

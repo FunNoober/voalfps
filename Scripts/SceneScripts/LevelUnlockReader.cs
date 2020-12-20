@@ -7,7 +7,16 @@ public class LevelUnlockReader : MonoBehaviour
     public GameObject level1Button;
     public GameObject level2Button;
     public GameObject level3Button;
-    
+
+    public bool hasLevel1;
+    public bool hasLevel2;
+
+
+    private void Update()
+    {
+        hasLevel1 = LevelUnlock.level1;
+        hasLevel2 = LevelUnlock.level2;
+    }
     void Start()
     {
         if(LevelUnlock.level1 == false)

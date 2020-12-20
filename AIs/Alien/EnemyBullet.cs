@@ -39,8 +39,9 @@ public class EnemyBullet : MonoBehaviour
                 healthShield.TakeDamage();
             }
             healthShield.isTakingDamage = false;
-
         }
-        
+
+        Destroy(gameObject);
+        return;
     }
 }

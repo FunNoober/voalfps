@@ -4,63 +4,45 @@ using UnityEngine;
 
 public class WaveSystem : MonoBehaviour
 {
-    public Wave[] waves;
-    public Wave currentWave;
-    int currentWaveNumber;
-    public float StandardTimeBetweenWaves;
-    public int EnemiesLeftTillSpawn;
-    public int hostilesAlive;
+    public Transform[] spawners;
+    public GameObject objectToSpawn;
+    public float spawnDelay;
+    public int enemiesSpawned;
+    public int enemiesInTheWave;
+    public bool canSpawnEnemy;
+    public bool canCountDown;
+    public bool waveHasSpawned;
+    public bool completeWaveSpawned;
 
-    public GameObject enemy;
-
-    public SurvivalManager manager;
-
-    void Start()
+    private void OnDrawGizmosSelected()
     {
-        NextWave();
-    }
-    
-    void Update()
-    {
-        if(EnemiesLeftTillSpawn > 0 && Time.time > StandardTimeBetweenWaves)
+        Gizmos.color = Color.green;
+        foreach(Transform pos in spawners)
         {
-            EnemiesLeftTillSpawn--;
-            StandardTimeBetweenWaves = Time.time + currentWave.nextSpawnTime;
-
-            HostileHealth health = Instantiate(enemy, transform.position, Quaternion.identity).GetComponent<HostileHealth>();
-            health.onDeath += OnEnemyDeath;
+            Gizmos.DrawSphere(pos.position, .1f);
         }
     }
 
-    void OnEnemyDeath()
+    private void Update()
     {
-        print("Enemy Dead");
-        hostilesAlive--;
-
-        if(hostilesAlive <= 0)
-        {
-            NextWave();
-        }
-
-        manager.score += 100;
+        if (enemiesSpawned > enemiesInTheWave)
+            canSpawnEnemy = false;
+        if(enemiesSpawned <= 0)
+            canSpawnEnemy = true;        
+        if (canSpawnEnemy)
+            StartCoroutine(SpawnWave());
     }
 
-    void NextWave()
+    IEnumerator SpawnWave()
     {
-        currentWaveNumber++;
-        if(currentWaveNumber - 1 < waves.Length)
+        yield return new WaitForSeconds(spawnDelay);
+        while(enemiesSpawned <= enemiesInTheWave)
         {
-            currentWave = waves[currentWaveNumber - 1];
-            EnemiesLeftTillSpawn = currentWave.NumberofEnemies;
-            hostilesAlive = EnemiesLeftTillSpawn;
+            foreach(Transform spawnPos in spawners)
+            {
+                Instantiate(objectToSpawn, spawnPos.position, Quaternion.identity);
+                enemiesSpawned++;
+            }
         }
-    }
-
-    [System.Serializable]
-    public class Wave
-    {
-        public int NumberofEnemies;
-        public float nextSpawnTime;
     }
 }
-

@@ -6,6 +6,7 @@ public class PlayerCasts : MonoBehaviour
 {
     public GameObject weaponSelectMenu;
     public bool inMenu;
+    public GameObject infoTooltip;
 
     private void Update()
     {
@@ -28,6 +29,18 @@ public class PlayerCasts : MonoBehaviour
                 DisableMenu();
             }
 
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        RaycastHit hitInfo;
+        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hitInfo, 5f))
+        {
+            if (hitInfo.collider.CompareTag("WeaponCrate"))
+                infoTooltip.SetActive(true);
+            else
+                infoTooltip.SetActive(false);
         }
     }
 

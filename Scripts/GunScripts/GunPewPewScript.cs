@@ -49,6 +49,9 @@ public string shootTrigger;
 public GameObject impactEffect;
 public GameObject muzzelLight;
 public GameObject bulletMark;
+public GameObject enemyImpactEffect;
+
+
 
 public PlayerMovement movementController;
 
@@ -210,6 +213,7 @@ CanReaload = false;
             if (target != null)
             {
                 target.TakeDamage(damage);
+                Instantiate(enemyImpactEffect, hit.point, Quaternion.identity);
             }
 
            //This adds 90's to the X Axis -->

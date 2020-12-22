@@ -6,11 +6,21 @@ public class HostileHealth : MonoBehaviour
 {
     public float health = 50f;
 
-    WaveSystem waveSystemManager;
-    
+    public bool inSurvival;
+
+    public WaveSystem waveSystemManager;
+
     void Start()
     {
-        waveSystemManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<WaveSystem>();
+        if (inSurvival)
+        {
+            waveSystemManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<WaveSystem>();
+            waveSystemManager.enemiesSpawned++;
+        }
+        if (waveSystemManager != null)
+            inSurvival = true;
+        else
+            inSurvival = false;
     }
     
     public void TakeDamage (float amount)
@@ -18,14 +28,15 @@ public class HostileHealth : MonoBehaviour
         health -= amount;
         if (health <= 0f)
         {
-        Die();
+            Die();
         }
 
 
     }
     public void Die()
     {
-        waveSystemManager.enemiesSpawned--;
+        if(inSurvival && waveSystemManager != null)
+            waveSystemManager.enemiesSpawned--;
         Destroy(gameObject);
     }
 }

@@ -25,18 +25,27 @@ public class WaveSystem : MonoBehaviour
 
     private void Update()
     {
-        if (enemiesSpawned > enemiesInTheWave)
+        if (enemiesSpawned >= enemiesInTheWave)
+        {
             canSpawnEnemy = false;
-        if(enemiesSpawned <= 0)
-            canSpawnEnemy = true;        
+        }
+        
+        if(enemiesSpawned == 0)
+        {
+            canSpawnEnemy = true;
+        }
+        
         if (canSpawnEnemy)
             StartCoroutine(SpawnWave());
+        //if (enemiesSpawned <= 0)
+            //enemiesInTheWave *= 2;
+
     }
 
     IEnumerator SpawnWave()
     {
         yield return new WaitForSeconds(spawnDelay);
-        while(enemiesSpawned <= enemiesInTheWave)
+        while(enemiesSpawned < enemiesInTheWave)
         {
             foreach(Transform spawnPos in spawners)
             {

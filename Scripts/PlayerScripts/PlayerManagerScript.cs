@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerManagerScript : MonoBehaviour
 {
     public bool HasWeaponOnStart = false;
 
-    public Text AmmoText;
-    public Text WeaponText;
+    public TextMeshProUGUI AmmoText;
+    public TextMeshProUGUI WeaponText;
 
     public int ZeroAmmo = 00;
 

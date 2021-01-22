@@ -5,8 +5,11 @@ using UnityEngine;
 public class PlayerCasts : MonoBehaviour
 {
     public GameObject weaponSelectMenu;
+    public GameObject healthShieldMenu;
     public bool inMenu;
+    public bool inHealthShieldMenu;
     public GameObject infoTooltip;
+    public GameObject healthInfoTooltip;
 
     private void Update()
     {
@@ -23,6 +26,10 @@ public class PlayerCasts : MonoBehaviour
                         return;
                     }
                 }
+                if(hit.collider.tag == "HealthCrate")
+                {
+                    ActivateDisableMenu();
+                }
             }
             if(inMenu)
             {
@@ -38,9 +45,25 @@ public class PlayerCasts : MonoBehaviour
         if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hitInfo, 5f))
         {
             if (hitInfo.collider.CompareTag("WeaponCrate"))
+            {
                 infoTooltip.SetActive(true);
+                return;
+            }
             else
+            {
                 infoTooltip.SetActive(false);
+            }
+            
+            
+            if (hitInfo.collider.CompareTag("HealthCrate"))
+            {
+                healthInfoTooltip.SetActive(true);
+                return;
+            }
+            else
+            {
+                healthInfoTooltip.SetActive(false);
+            }
         }
     }
 
@@ -49,7 +72,6 @@ public class PlayerCasts : MonoBehaviour
         weaponSelectMenu.SetActive(true);
         inMenu = true;
         Cursor.lockState = CursorLockMode.None;
-        Time.timeScale = 0;
     }
 
     void DisableMenu()
@@ -58,5 +80,24 @@ public class PlayerCasts : MonoBehaviour
         inMenu = false;
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
+    }
+
+    void ActivateDisableMenu()
+    {
+        if(inHealthShieldMenu)
+        {
+            healthShieldMenu.SetActive(false);
+            inHealthShieldMenu = false;
+            Time.timeScale = 1;
+            Cursor.lockState = CursorLockMode.Locked;
+            return;
+        }
+        if(!inHealthShieldMenu)
+        {
+            healthShieldMenu.SetActive(true);
+            inHealthShieldMenu = true;
+            Cursor.lockState = CursorLockMode.None;
+            return;
+        }
     }
 }

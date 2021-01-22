@@ -16,9 +16,9 @@ public class DeathTrigger : MonoBehaviour
 
     void OnTriggerEnter()
     {
-    if(player.tag == "Player")
-    {
-        playerHealth.Death();
-    }
+        if (player.tag == "Player")
+        {
+            playerHealth.Die();
+        }
     }
 }

@@ -62,7 +62,7 @@ public class FlameThrower : MonoBehaviour
         Collider[] thingsToFire = Physics.OverlapSphere(point.position, flameSize);
         foreach(Collider objects in thingsToFire)
         {
-            HostileHealth enemyHealth = objects.GetComponent<HostileHealth>();
+            AlienHealth enemyHealth = objects.GetComponent<AlienHealth>();
             if(enemyHealth != null)
             {
                 enemyHealth.TakeDamage(damage);

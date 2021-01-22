@@ -11,6 +11,7 @@ public class GunPickUp : MonoBehaviour
     public GameObject Player;
 
     public int theWeaponIndex;
+    public string weaponName;
 
     public GunPewPewScript gunScript;
 
@@ -20,30 +21,32 @@ public class GunPickUp : MonoBehaviour
 
 
     //All Weapons
-    public GameObject[] weapons;
+    public GunPewPewScript[] weapons;
 
     void OnTriggerEnter()
     {
         SetParent();
     }
 
-   public void SetParent()
-   {
-      if(Hero.gameObject.tag == "Player")
-      {
-         gunScript = WeaponPlayer.GetComponent<GunPewPewScript>();
-         WeaponPlayer.transform.parent = Player.transform;
-         WeaponPlayer.SetActive(true);
-         theGunManager.weaponsAreActive[theWeaponIndex] = true;
-         //Disable All Weapons
-         foreach (GameObject weapon in weapons)
-         {
-            weapon.SetActive(false);
-         }
+    public void SetParent()
+    {
+        if (Hero.gameObject.tag == "Player")
+        {
+            weapons = FindObjectsOfType<GunPewPewScript>();
+            gunScript = WeaponPlayer.GetComponent<GunPewPewScript>();
+            WeaponPlayer.transform.parent = Player.transform;
+            WeaponPlayer.SetActive(true);
+            theGunManager.weaponsAreActive[theWeaponIndex] = true;
+            //Disable All Weapons
+            foreach (GunPewPewScript theGun in weapons)
+            {
+                if (theGun.gameObject.name != weaponName)
+                    theGun.gameObject.SetActive(false);
+            }
 
-         Destroy(gameObject);
+            Destroy(gameObject);
 
-      }
-   }
- 
+        }
+    }
+
 }

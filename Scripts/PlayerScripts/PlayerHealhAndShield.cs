@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerHealhAndShield : MonoBehaviour
 {
@@ -10,7 +11,26 @@ public class PlayerHealhAndShield : MonoBehaviour
     public bool shieldActive;
 
     public GameObject gameOverScreen;
-    
+
+    public Slider healthBar;
+    public Slider shieldBar;
+
+    [HideInInspector]
+    public Slider[] slidersFound;
+
+    private void Awake()
+    {
+        slidersFound = FindObjectsOfType<Slider>();
+        foreach(Slider slider in slidersFound)
+        {
+            if (slider.gameObject.name == "ShieldBar")
+                shieldBar = slider;
+            if (slider.gameObject.name == "HealthBar")
+                healthBar = slider;
+        }
+    }
+
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -21,8 +41,15 @@ public class PlayerHealhAndShield : MonoBehaviour
 
     private void Update()
     {
-        health = Mathf.Clamp(health, 0f, 100f);
-        shield = Mathf.Clamp(shield, 0f, 100f);
+        if(healthBar != null)
+            health = Mathf.Clamp(health, 0f, 100f);
+
+        if(shieldBar != null)
+            shield = Mathf.Clamp(shield, 0f, 100f);
+
+        shieldBar.value = shield;
+        healthBar.value = health;
+
 
         if (shield <= 0)
             shieldActive = false;

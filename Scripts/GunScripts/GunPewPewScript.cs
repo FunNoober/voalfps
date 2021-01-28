@@ -8,7 +8,6 @@ using TMPro;
 public class GunPewPewScript : MonoBehaviour
 {
     #region Varibles
-    //Publics
     [Header("Floats")]
     public float damage = 10f;
     public float range = 100f;
@@ -57,7 +56,6 @@ public class GunPewPewScript : MonoBehaviour
     public TextMeshProUGUI[] textFound;
 
 
-
     public PlayerMovement movementController;
 
     public AudioClip weaponShootingSFX;
@@ -80,19 +78,20 @@ public class GunPewPewScript : MonoBehaviour
 
     [Space]
     [Header("Color")]
-    public Color newColor;
+    public Color realoadColor;
     public Color defaultColor;
 
     [Space]
     [Header("Vectors")]
-    public Vector3 upRecoil;
-    [SerializeField] Vector3 origRotation;
     public Transform shotGunPoint;
 
 
     //Privates
     private float nextTimeToFire = 0f;
     private bool isReloading = false;
+
+    public GunsAreActive weaponActive;
+    public int currentWeaponIndex;
 
     #endregion
 
@@ -106,12 +105,13 @@ public class GunPewPewScript : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         movementController = FindObjectOfType<PlayerMovement>();
-        newColor.a = 255;
-        newColor.r = 82;
-        newColor.g = 82;
-        newColor.b = 82;
+        realoadColor.a = 255;
+        realoadColor.r = 82;
+        realoadColor.g = 82;
+        realoadColor.b = 82;
         defaultColor = Color.white;
         fpsCam = (Camera)FindObjectOfType(typeof(Camera));
+        weaponActive = FindObjectOfType<GunsAreActive>();
         #region Cycling Through Text
         textFound = FindObjectsOfType<TextMeshProUGUI>();
         foreach (TextMeshProUGUI singleText in textFound)
@@ -147,13 +147,12 @@ public class GunPewPewScript : MonoBehaviour
         reserveAmmo = customStartAmmo;
         reserveAmmo *= customMultiplyAmmo;
         varibleAmmo = maxAmmo;
-        origRotation = transform.localEulerAngles;
     }
 
     void OnEnable()
     {
-        
 
+        weaponActive.weaponsAreActive[currentWeaponIndex] = true;
 
 
         Transform[] allChildren = GetComponentsInChildren<Transform>();
@@ -186,10 +185,6 @@ public class GunPewPewScript : MonoBehaviour
 
         if (isReloading)
             return;
-
-        if (Input.GetButtonUp("Fire1"))
-            StopRecoil();
-
 
 
         if (CanReaload == true && currentAmmo < maxAmmo)
@@ -224,7 +219,7 @@ public class GunPewPewScript : MonoBehaviour
 
         if (currentAmmo <= 2)
         {
-            ammoText.color = newColor;
+            ammoText.color = realoadColor;
         }
 
         else
@@ -252,7 +247,6 @@ public class GunPewPewScript : MonoBehaviour
         Invoke(nameof(LightOff), .05f);
         audio.Play();
         audio.clip = weaponShootingSFX;
-        AddRecoil();
 
         currentAmmo--;
         shotsFired++;
@@ -293,16 +287,6 @@ public class GunPewPewScript : MonoBehaviour
     public void LightOff()
     {
         muzzelLight.SetActive(false);
-    }
-
-    void AddRecoil()
-    {
-        transform.localEulerAngles += upRecoil;
-    }
-
-    void StopRecoil()
-    {
-        transform.localEulerAngles = origRotation;
     }
     #endregion
 

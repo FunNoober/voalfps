@@ -19,6 +19,8 @@ public class AmmoPickUp : MonoBehaviour
 
     public string weaponName;
 
+    public event System.Action giveAmmo;
+
     void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider>();
@@ -35,6 +37,7 @@ public class AmmoPickUp : MonoBehaviour
 
     void OnTriggerEnter()
     {
+        
         player = GameObject.FindWithTag("Player").GetComponent<Collider>();
 
         gunsFound = FindObjectsOfType<GunPewPewScript>();
@@ -44,20 +47,25 @@ public class AmmoPickUp : MonoBehaviour
             gunScript = theGun.gameObject.GetComponent<GunPewPewScript>();
             if (theGun.gameObject.name == weaponName && gunScript != null)
             {
-                GiveWeapon();
+                GiveAmmo();
             }
         }
 
 
     }
 
-    void GiveWeapon()
+    void GiveAmmo()
     {
         if (player.gameObject.tag == "Player" && theGunManager.weaponsAreActive[WeaponIndex] == true)
         {
+            if (giveAmmo != null)
+                giveAmmo();
+
+            
             gunScript.reserveAmmo += ammoToGive;
             gunScript.CanReaload = true;
             Destroy(gameObject);
+            return;
         }
     }
 }

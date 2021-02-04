@@ -30,16 +30,13 @@ public class WaveSystem : MonoBehaviour
             canSpawnEnemy = false;
         }
         
-        if(enemiesSpawned == 0)
+        if(enemiesSpawned <= 0)
         {
             canSpawnEnemy = true;
         }
         
         if (canSpawnEnemy)
             StartCoroutine(SpawnWave());
-        //if (enemiesSpawned <= 0)
-            //enemiesInTheWave *= 2;
-
     }
 
     IEnumerator SpawnWave()
@@ -49,8 +46,8 @@ public class WaveSystem : MonoBehaviour
         {
             foreach(Transform spawnPos in spawners)
             {
-                Instantiate(objectToSpawn, spawnPos.position, Quaternion.identity);
-                enemiesSpawned++;
+                Instantiate(objectToSpawn, spawnPos.position, spawnPos.rotation);
+                //enemiesSpawned++;
             }
         }
     }

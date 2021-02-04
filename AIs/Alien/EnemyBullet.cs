@@ -29,16 +29,7 @@ public class EnemyBullet : MonoBehaviour
     {
         if(player.gameObject.tag == "Player")
         {
-            healthShield.isTakingDamage = true;
-            if(healthShield.ShieldActive && healthShield.isTakingDamage)
-            {
-               healthShield.TakeShield();
-            }
-            if(healthShield.ShieldActive == false && healthShield.isTakingDamage == true)
-            {
-                healthShield.TakeDamage();
-            }
-            healthShield.isTakingDamage = false;
+            healthShield.TakeDamage(5);
         }
 
         Destroy(gameObject);

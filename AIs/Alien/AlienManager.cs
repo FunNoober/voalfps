@@ -4,24 +4,26 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class EnemyManager : MonoBehaviour
+public class AlienManager : MonoBehaviour
 {
     public NavMeshAgent AI;
 
     public Transform player;
+    public Vector3 traceOffest;
 
     public LayerMask whatPlayer;
     public LayerMask whatGround;
 
     public Vector3 walkPoint;
     public Transform shootPoint;
+    public Transform[] raycastPoints;
     public bool walkPointSet;
     public float walkPointRange;
 
     public float delayBetweenAttacks;
     bool alreadyAttacked;
 
-    public float sightRange, attackRange;
+    public float sightRange, attackRange, visionRange;
     public bool playerInAttack, playerInSight;
 
     public Animator alienAnims;
@@ -30,16 +32,36 @@ public class EnemyManager : MonoBehaviour
 
     public bool InSurvival = true;
 
+    private Physics physics;
+
     void Awake()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Transform>();
         AI = GetComponent<NavMeshAgent>();
         alienAnims = GetComponent<Animator>();
+        physics = new Physics();
     }
 
     void Update()
     {
-        playerInSight = Physics.CheckSphere(transform.position, sightRange, whatPlayer);
+        foreach(Transform raycastPoint in raycastPoints)
+        {
+            RaycastHit[] coneHits = physics.ConeCastAll(transform.position, visionRange, transform.forward, visionRange, 25);
+            if(coneHits.Length > 0)
+            {
+                foreach(RaycastHit hit in coneHits)
+                {
+                    if(hit.collider.CompareTag("Player"))
+                    {
+                        playerInSight = true;
+                    }
+                }
+            }
+        }
+
+
+
+
         playerInAttack = Physics.CheckSphere(transform.position, attackRange, whatPlayer);
 
         if (!playerInSight && !playerInAttack) Patroling();
@@ -66,14 +88,14 @@ public class EnemyManager : MonoBehaviour
     {
         AI.SetDestination(transform.position);
 
-        transform.LookAt(player);
+        transform.LookAt(player.position);
         alienAnims.SetBool("isWalking", false);
 
         if(!alreadyAttacked)
         {
             alienAnims.SetBool("IsAttacking", true);
             Rigidbody rb = Instantiate(projectile, shootPoint.position, shootPoint.rotation).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 32f);
+            rb.AddForce(transform.forward * 16f);
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), delayBetweenAttacks);
@@ -85,6 +107,7 @@ public class EnemyManager : MonoBehaviour
         AI.SetDestination(player.position);
         alienAnims.SetBool("IsAttacking", false);
         alienAnims.SetBool("isWalking", true);
+        Debug.Log("In Pursuit");
     }
 
     void SearchWalkPoint()
@@ -105,5 +128,12 @@ public class EnemyManager : MonoBehaviour
     void SetAttack()
     {
         alienAnims.SetBool("IsAttacking", true);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
+        Gizmos.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * visionRange);
     }
 }

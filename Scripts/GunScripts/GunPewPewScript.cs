@@ -261,10 +261,12 @@ public class GunPewPewScript : MonoBehaviour
                 Instantiate(enemyImpactEffect, hit.point, Quaternion.identity);
             }
 
-            //This adds 90's to the X Axis -->
+            
             if (hit.collider.CompareTag("Enviroment"))
             {
-                GameObject bullectHole = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal) * Quaternion.AngleAxis(90, Vector3.right));
+                Vector3 upLocation = new Vector3(0, 0, 0);
+                //+ Quaternion.AngleAxis(270, Vector3.right)
+                GameObject bullectHole = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal)* Quaternion.AngleAxis(180, Vector3.right) );
                 Destroy(bullectHole, 20f);
             }
         }

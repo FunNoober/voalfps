@@ -10,15 +10,22 @@ public class Level2Spawner : MonoBehaviour
     public Transform[] spawnPos;
     public GameObject enemy;
 
+    public int enemiesSpawned;
+    public SceneFading fader;
+
     private void Update()
     {
         if (wave > maxWaves)
             canSpawn = false;
         if (wave < maxWaves)
             canSpawn = true;
-        
-        if(canSpawn)
+
+        if (canSpawn)
             SpawnWave();
+
+        if (wave >= maxWaves && enemiesSpawned <= 0)
+            fader.FadeIn();
+
     }
 
     void SpawnWave()

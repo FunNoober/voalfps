@@ -26,8 +26,8 @@ public class Level3Manager : MonoBehaviour
             
             health.OnDeath += SubtractAliens;
         }
-        if (ammoPickUps[0].gameObject.name == "PistolAmmo2")
-            ammoPickUps[0].giveAmmo += AddAmmoCount;
+        if (ammoPickUps[1].gameObject.name == "PistolAmmo2")
+            ammoPickUps[1].giveAmmo += AddAmmoCountN2;
         if (ammoPickUps[0].gameObject.name == "PistolAmmo")
             ammoPickUps[0].giveAmmo += AddAmmoCount;
 
@@ -60,15 +60,18 @@ public class Level3Manager : MonoBehaviour
     {
         if (ammoPickUps[1].id == 1)
         {
-            ammoPicked[1] = true;
-            
+            ammoPicked[1] = true;           
         }
-        if (ammoPickUps[0].id == 1)
+        
+
+    }
+
+    void AddAmmoCountN2()
+    {
+        if (ammoPickUps[0].id == 0)
         {
             ammoPicked[0] = true;
-            
         }
-
     }
     
 }

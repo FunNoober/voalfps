@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AlienHealth : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class AlienHealth : MonoBehaviour
     public event System.Action OnDeath;
 
     private Animator animator;
+    private NavMeshAgent agent;
+    private AlienManager manager;
 
     public event System.Action OnSpawn;
 
@@ -48,6 +51,8 @@ public class AlienHealth : MonoBehaviour
     {
         Spawned();
         animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        manager = GetComponent<AlienManager>();
     }
 
     public void Spawned()
@@ -78,7 +83,10 @@ public class AlienHealth : MonoBehaviour
         if (inLevel2 && spawner != null)
             spawner.enemiesSpawned--;
 
+        transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
         animator.SetTrigger("isDie");
+        agent.enabled = false;
+        manager.enabled = false;
         Debug.Log("Dead");
         yield return new WaitForSeconds(5);
         Destroy(gameObject);

@@ -93,6 +93,8 @@ public class GunPewPewScript : MonoBehaviour
     public GunsAreActive weaponActive;
     public int currentWeaponIndex;
 
+
+
     #endregion
 
     #region One Time Call
@@ -210,8 +212,10 @@ public class GunPewPewScript : MonoBehaviour
             {
                 nextTimeToFire = Time.time + 1f / fireRate;
                 Shoot();
+
             }
         }
+
 
 
 
@@ -290,8 +294,9 @@ public class GunPewPewScript : MonoBehaviour
     {
         muzzelLight.SetActive(false);
     }
-    #endregion
 
+    #endregion
+    
     IEnumerator Reaload()
     {
         yield return new WaitForSeconds(realoadWait);

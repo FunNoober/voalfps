@@ -104,10 +104,10 @@ public class AlienManager : MonoBehaviour
 
     void ChasePlayer()
     {
-        AI.SetDestination(player.position);
         alienAnims.SetBool("IsAttacking", false);
         alienAnims.SetBool("isWalking", true);
-        Debug.Log("In Pursuit");
+        AI.SetDestination(player.position);
+
     }
 
     void SearchWalkPoint()

@@ -93,8 +93,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             playerController.height = .5f;
-            moveSpeed -= 2;
-            runSpeed -= 2;
         }
         else
         {

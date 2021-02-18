@@ -14,8 +14,8 @@ public class LoadLevel2InLevel1 : MonoBehaviour
     
     IEnumerator LoadLevel2()
     {
-        yield return new WaitForSeconds(120);
-        SceneManager.LoadScene("Level2");
-        LevelUnlock.level2 = true;
+        yield return new WaitForSeconds(60);
+        SceneFading fader = GetComponent<SceneFading>();
+        fader.FadeIn();
     }
 }

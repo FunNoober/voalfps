@@ -73,6 +73,11 @@ public class AlienHealth : MonoBehaviour
     }
     public IEnumerator Die()
     {
+        BoxCollider bColl = GetComponent<BoxCollider>();
+        bColl.enabled = false;
+        agent.enabled = false;
+        manager.enabled = false;
+        
         if(OnDeath != null)
         {
             OnDeath();
@@ -85,8 +90,6 @@ public class AlienHealth : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
         animator.SetTrigger("isDie");
-        agent.enabled = false;
-        manager.enabled = false;
         Debug.Log("Dead");
         yield return new WaitForSeconds(5);
         Destroy(gameObject);

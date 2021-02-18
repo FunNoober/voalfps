@@ -37,7 +37,7 @@ public class AmmoPickUp : MonoBehaviour
 
     void OnTriggerEnter()
     {
-        
+
         player = GameObject.FindWithTag("Player").GetComponent<Collider>();
 
         gunsFound = FindObjectsOfType<GunPewPewScript>();
@@ -61,8 +61,15 @@ public class AmmoPickUp : MonoBehaviour
             if (giveAmmo != null)
                 giveAmmo();
 
-            
+
+
             gunScript.reserveAmmo += ammoToGive;
+            if (gunScript.currentAmmo == 0)
+                gunScript.currentAmmo += (int)ammoToGive;                
+
+
+            
+
             gunScript.CanReaload = true;
             Destroy(gameObject);
             return;

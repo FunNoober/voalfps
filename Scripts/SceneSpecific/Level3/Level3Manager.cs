@@ -9,21 +9,24 @@ public class Level3Manager : MonoBehaviour
     public int aliensAlive;
     public bool weaponPickedUp;
     public bool[] ammoPicked;
+    public bool spawnedSecondWave;
     public SceneFading fader;
 
     AlienHealth[] alienHealths;
+    public GameObject alienPrefab;
 
     public AmmoPickSet[] ammoPickUps;
-    
+    public Transform[] spawnPoints;
+
 
     private void Awake()
     {
         alienHealths = FindObjectsOfType<AlienHealth>();
         //ammoPickUps = FindObjectsOfType<AmmoPickSet>();
-        foreach(AlienHealth health in alienHealths)
+        foreach (AlienHealth health in alienHealths)
         {
             health.OnSpawn += AddAliens;
-            
+
             health.OnDeath += SubtractAliens;
         }
         if (ammoPickUps[1].gameObject.name == "PistolAmmo2")
@@ -39,10 +42,21 @@ public class Level3Manager : MonoBehaviour
 
         if (aliensAlive == 0)
             aliensKilled = true;
-        
+
         if (aliensKilled && weaponPickedUp && aliensAlive <= 0 && ammoPicked[0] == true && ammoPicked[1] == true)
         {
-            fader.FadeIn();
+            if (!spawnedSecondWave)
+            {
+                foreach (Transform spawnLoc in spawnPoints)
+                {
+                    AlienHealth enemy = Instantiate(alienPrefab, spawnLoc.position, Quaternion.identity).GetComponent<AlienHealth>();
+                    enemy.OnSpawn += AddAliens;
+                    enemy.OnDeath += SubtractAliens;
+                }
+                spawnedSecondWave = true;
+            }
+            if (spawnedSecondWave && aliensKilled && weaponPickedUp && ammoPicked[0] == true && ammoPicked[1] == true)
+                fader.FadeIn();
         }
     }
 
@@ -60,9 +74,9 @@ public class Level3Manager : MonoBehaviour
     {
         if (ammoPickUps[1].id == 1)
         {
-            ammoPicked[1] = true;           
+            ammoPicked[1] = true;
         }
-        
+
 
     }
 
@@ -73,5 +87,5 @@ public class Level3Manager : MonoBehaviour
             ammoPicked[0] = true;
         }
     }
-    
+
 }

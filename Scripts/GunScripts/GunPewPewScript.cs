@@ -158,7 +158,7 @@ public class GunPewPewScript : MonoBehaviour
 
 
         Transform[] allChildren = GetComponentsInChildren<Transform>();
-        foreach(Transform child in allChildren)
+        foreach (Transform child in allChildren)
         {
             if (child.name == "Muzzle")
                 muzzelLight = child.gameObject;
@@ -261,16 +261,18 @@ public class GunPewPewScript : MonoBehaviour
             AlienHealth target = hit.transform.GetComponent<AlienHealth>();
             if (target != null)
             {
-                target.TakeDamage(damage);
-                Instantiate(enemyImpactEffect, hit.point, Quaternion.identity);
+                if (target.health == 0)
+                    target.TakeDamage(damage);
+                GameObject enemyEffect = Instantiate(enemyImpactEffect, hit.point, Quaternion.identity);
+                Destroy(enemyEffect, 5);
             }
 
-            
+
             if (hit.collider.CompareTag("Enviroment"))
             {
                 Vector3 upLocation = new Vector3(0, 0, 0);
                 //+ Quaternion.AngleAxis(270, Vector3.right)
-                GameObject bullectHole = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal)* Quaternion.AngleAxis(180, Vector3.right) );
+                GameObject bullectHole = Instantiate(bulletMark, hit.point, Quaternion.LookRotation(hit.normal) * Quaternion.AngleAxis(180, Vector3.right));
                 Destroy(bullectHole, 20f);
             }
         }
@@ -296,7 +298,8 @@ public class GunPewPewScript : MonoBehaviour
     }
 
     #endregion
-    
+
+    #region IEnumerators
     IEnumerator Reaload()
     {
         yield return new WaitForSeconds(realoadWait);
@@ -318,5 +321,5 @@ public class GunPewPewScript : MonoBehaviour
 
         isReloading = false;
     }
-
+    #endregion
 }

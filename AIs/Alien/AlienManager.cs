@@ -95,7 +95,7 @@ public class AlienManager : MonoBehaviour
         {
             alienAnims.SetBool("IsAttacking", true);
             Rigidbody rb = Instantiate(projectile, shootPoint.position, shootPoint.rotation).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 16f);
+            rb.AddForce(transform.forward * 640 * Time.deltaTime * 1);
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), delayBetweenAttacks);

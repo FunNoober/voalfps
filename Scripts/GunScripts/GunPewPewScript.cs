@@ -261,8 +261,8 @@ public class GunPewPewScript : MonoBehaviour
             AlienHealth target = hit.transform.GetComponent<AlienHealth>();
             if (target != null)
             {
-                if (target.health == 0)
-                    target.TakeDamage(damage);
+                
+                target.TakeDamage(damage);
                 GameObject enemyEffect = Instantiate(enemyImpactEffect, hit.point, Quaternion.identity);
                 Destroy(enemyEffect, 5);
             }

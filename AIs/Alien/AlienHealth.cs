@@ -24,6 +24,8 @@ public class AlienHealth : MonoBehaviour
 
     public event System.Action OnSpawn;
 
+    bool isDead;
+
     private void Awake()
     {
         waveSystemManager = FindObjectOfType<WaveSystem>();
@@ -39,12 +41,7 @@ public class AlienHealth : MonoBehaviour
         else
             spawner.enemiesSpawned++;
 
-
-
-
         Spawned();
-
-
     }
 
     private void Start()
@@ -53,6 +50,12 @@ public class AlienHealth : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         manager = GetComponent<AlienManager>();
+    }
+
+    private void Update()
+    {
+        if (health <= 0f && !isDead)
+            StartCoroutine(Die());
     }
 
     public void Spawned()
@@ -64,7 +67,7 @@ public class AlienHealth : MonoBehaviour
     public void TakeDamage (float amount)
     {
         health -= amount;
-        if (health <= 0f)
+        if (health <= 0f && !isDead)
         {
             StartCoroutine(Die());
         }
@@ -73,6 +76,7 @@ public class AlienHealth : MonoBehaviour
     }
     public IEnumerator Die()
     {
+        isDead = true;
         BoxCollider bColl = GetComponent<BoxCollider>();
         bColl.enabled = false;
         agent.enabled = false;
@@ -90,7 +94,6 @@ public class AlienHealth : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
         animator.SetTrigger("isDie");
-        Debug.Log("Dead");
         yield return new WaitForSeconds(5);
         Destroy(gameObject);
     }

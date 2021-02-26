@@ -50,6 +50,8 @@ public class Level3Manager : MonoBehaviour
                 foreach (Transform spawnLoc in spawnPoints)
                 {
                     AlienHealth enemy = Instantiate(alienPrefab, spawnLoc.position, Quaternion.identity).GetComponent<AlienHealth>();
+                    AlienManager ae = enemy.GetComponent<AlienManager>();
+                    ae.playerInSight = true;
                     enemy.OnSpawn += AddAliens;
                     enemy.OnDeath += SubtractAliens;
                 }

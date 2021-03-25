@@ -249,12 +249,12 @@ public class GunPewPewScript : MonoBehaviour
         muzzelLight.SetActive(true);
         AudioSource audio = GetComponent<AudioSource>();
         Invoke(nameof(LightOff), .05f);
-        audio.Play();
         audio.clip = weaponShootingSFX;
+        audio.Play();
 
+        animator.SetTrigger(shootTrigger);
         currentAmmo--;
         shotsFired++;
-        animator.SetTrigger(shootTrigger);
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out RaycastHit hit, range) && !isShotgun)
         {

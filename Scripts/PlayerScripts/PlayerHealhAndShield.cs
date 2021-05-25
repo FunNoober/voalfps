@@ -15,6 +15,8 @@ public class PlayerHealhAndShield : MonoBehaviour
     public Slider healthBar;
     public Slider shieldBar;
 
+    public bool useCustomValues = false;
+
     [HideInInspector]
     public Slider[] slidersFound;
 
@@ -34,8 +36,11 @@ public class PlayerHealhAndShield : MonoBehaviour
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        health = 100f;
-        shield = 100f;
+        if (useCustomValues == false)
+        {
+            health = 100f;
+            shield = 100f;
+        }
         shieldActive = true;
     }
 

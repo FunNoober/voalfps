@@ -5,46 +5,30 @@ using UnityEngine.UI;
 
 public class Cheats : MonoBehaviour
 {
-    public GunPewPewScript[] weapons;
+    public GameObject canvas;
+    public GameObject weapons;
+    public GameObject tooltipRenderer;
 
+    public InputField cheatType;
 
-    public GameObject cheatMenu;
-    public GameObject playerCanvas;
-    public bool inCheat;
-
-    private void Update()
+    public void RecieveCheat()
     {
-        if(Input.GetKeyDown(KeyCode.BackQuote))
-        {
-            if (inCheat)
-                DisableMenu();
-            else
-                EnableMenu();
-        }
-    }
+        if(cheatType.text == "hide ui 1")
+            canvas.SetActive(false);
 
-    public void GiveAmmo()
-    {
-        foreach(GunPewPewScript gun in weapons)
-        {
-            gun.maxAmmo = 999999;
-            gun.currentAmmo = 999999;
-            gun.CanReaload = true;
-        }
-    }
+        if(cheatType.text == "hide ui 0")
+            canvas.SetActive(true);
 
-    void EnableMenu()
-    {
-        cheatMenu.SetActive(true);
-        playerCanvas.SetActive(false);
-        inCheat = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
-    void DisableMenu()
-    {
-        cheatMenu.SetActive(false);
-        playerCanvas.SetActive(true);
-        inCheat = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        if(cheatType.text == "hide weapons 1")
+            weapons.SetActive(false);
+
+        if(cheatType.text == "hide weapons 0")
+            weapons.SetActive(true);
+
+        if(cheatType.text == "hide other camera 1")
+            tooltipRenderer.SetActive(false);
+
+        if(cheatType.text == "hide other camera 0")
+            tooltipRenderer.SetActive(true);
     }
 }

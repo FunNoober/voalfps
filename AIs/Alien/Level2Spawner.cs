@@ -9,6 +9,7 @@ public class Level2Spawner : MonoBehaviour
     public bool canSpawn;
     public Transform[] spawnPos;
     public GameObject enemy;
+    public GameObject exitDoor;
 
     public int enemiesSpawned;
     public SceneFading fader;
@@ -24,7 +25,7 @@ public class Level2Spawner : MonoBehaviour
             SpawnWave();
 
         if (wave >= maxWaves && enemiesSpawned <= 0)
-            fader.FadeIn();
+            exitDoor.GetComponent<Animator>().SetBool("OpenDoor", true);
 
     }
 

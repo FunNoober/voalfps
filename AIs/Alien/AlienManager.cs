@@ -92,10 +92,10 @@ public class AlienManager : MonoBehaviour
         alienAnims.SetBool("isWalking", false);
 
         if(!alreadyAttacked)
-        {
+        {  
             alienAnims.SetBool("IsAttacking", true);
             Rigidbody rb = Instantiate(projectile, shootPoint.position, shootPoint.rotation).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 640 * Time.deltaTime * 1);
+            rb.AddForce(transform.forward * 10);
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), delayBetweenAttacks);

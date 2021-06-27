@@ -10,6 +10,7 @@ public class SceneFading : MonoBehaviour
 
     public float fadeTime;
     public bool hasFadedOut;
+    public bool hasStartedFade = false;
 
     private void Awake()
     {
@@ -22,14 +23,24 @@ public class SceneFading : MonoBehaviour
             fade.alpha -= Time.deltaTime;
         if (fade.alpha == 0)
             hasFadedOut = true;
+        
+        if(hasStartedFade == true)
+        {
+            fade.alpha += Time.deltaTime;
+            if(fade.alpha == 1)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
     public void FadeIn()
     {
-        fade.alpha += Time.deltaTime;
-        if(fade.alpha == 1)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
+        hasStartedFade = true;
+        //Debug.Log("Fading");
+        //fade.alpha += Time.deltaTime;
+        //Debug.Log(fade.alpha.ToString());
+        //if(fade.alpha == 1)
+        //{
+            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //}
     }
 }

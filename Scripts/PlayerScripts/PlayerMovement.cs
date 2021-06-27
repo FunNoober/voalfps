@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     public float stamina = 10f;
     public float maxStamina = 10f;
 
+    public float jumpHeight = 10;
+
     //Transforms
     Vector3 velocity;
     public Transform groundCheckerMachine;
@@ -39,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     {
         defaultmoveSpeed = moveSpeed;
         defualtRunSpeed = runSpeed;
+        jumpHeight = 3;
     }
     #endregion Happening On Start
 
@@ -57,6 +60,13 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
 
         playerController.Move(move * moveSpeed * Time.deltaTime);
+
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
+        {
+            velocity.y = jumpHeight;
+            velocity.y -= gravity * Time.deltaTime;
+            playerController.Move(velocity * Time.deltaTime);
+        }
 
         if(Input.GetKey(KeyCode.LeftShift) && canRun == true)
         {

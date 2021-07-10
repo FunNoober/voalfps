@@ -21,6 +21,7 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = startHealth;
         shieldActive = true;
         deathUI.SetActive(false);
+        Time.timeScale = 1;
     }
 
     private void FixedUpdate()
@@ -42,5 +43,6 @@ public class PlayerHealth : MonoBehaviour
         isDead = true;
         deathUI.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 0;
     }
 }

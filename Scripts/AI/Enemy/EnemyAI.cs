@@ -13,15 +13,17 @@ public class EnemyAI : MonoBehaviour
     public LayerMask playerMask;
 
     public Transform rayCastPoint;
+    public Transform shootPoint;
+
+    public GameObject projectile;
 
     private Transform player;
 
-    [SerializeField]
     private bool playerInRaduis;
-    [SerializeField]
     private bool playerInSight;
-    [SerializeField]
     private bool playerInAttack;
+
+    private float nextTimeToFire;
 
     private NavMeshAgent agent;
 
@@ -66,16 +68,25 @@ public class EnemyAI : MonoBehaviour
             agent.SetDestination(player.position);
         }
 
-        if (playerInAttack)
+        if (playerInAttack) { agent.SetDestination(transform.position); }
+
+        if (playerInAttack && Time.time >= nextTimeToFire)
         {
-            agent.SetDestination(transform.position);
+            nextTimeToFire = Time.time + 1f / fireRate;
+            Attack();       
         }
+    }
+
+    public void Attack()
+    {
+        Rigidbody projectileRb = Instantiate(projectile, shootPoint.position, shootPoint.rotation).GetComponent<Rigidbody>();
+        projectileRb.transform.forward = shootPoint.forward;
+        projectileRb.AddForce(shootPoint.forward * 45, ForceMode.Impulse);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
-        Gizmos.DrawLine(rayCastPoint.position, player.position);
     }
 
 }

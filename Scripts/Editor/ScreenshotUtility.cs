@@ -5,6 +5,7 @@ using UnityEditor;
 public class ScreenshotUtility : EditorWindow
 {
     private string imageName;
+    private string fileFormat;
 
     [MenuItem("Tools/ScreenShot")]
     public static void CreateWindow()
@@ -15,9 +16,10 @@ public class ScreenshotUtility : EditorWindow
     private void OnGUI()
     {
         imageName = EditorGUILayout.TextField("Name", imageName);
-        if(GUILayout.Button("Save Image"))
+        fileFormat = EditorGUILayout.TextField("Format", fileFormat);
+        if (GUILayout.Button("Save Image"))
         {
-            ScreenCapture.CaptureScreenshot(imageName + System.DateTime.Now.Minute + System.DateTime.Now.Second + ".png");
+            ScreenCapture.CaptureScreenshot(imageName + System.DateTime.Now.Minute + System.DateTime.Now.Second + fileFormat);
         }
     }
 }

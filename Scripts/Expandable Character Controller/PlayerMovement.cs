@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         mainCam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         transform.Rotate(Vector3.up * mouseX);
 
-        if(actions.StarndardInput.FlashLight.ReadValue<float>() == 1 && stats.hasFlashlight)
+        if(actions.StarndardInput.FlashLight.triggered && stats.hasFlashlight)
         {
             if(flashLightEnabled == false)
             {

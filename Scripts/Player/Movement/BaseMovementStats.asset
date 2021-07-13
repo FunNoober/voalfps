@@ -30,4 +30,4 @@ MonoBehaviour:
   shouldUseJump: 1
   shouldUseDoubleJump: 0
   hasAirStrafe: 1
-  hasFlashlight: 0
+  hasFlashlight: 1

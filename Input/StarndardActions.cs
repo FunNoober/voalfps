@@ -359,7 +359,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ca892143-7430-43e0-b234-9d63060dda39"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

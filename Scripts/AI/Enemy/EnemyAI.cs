@@ -5,17 +5,10 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public float detectionRadius;
-    public float attackRaduis;
-    public float fireRate;
-
-    public LayerMask detectionMask;
-    public LayerMask playerMask;
+    public BaseEnemyData stats;
 
     public Transform rayCastPoint;
     public Transform shootPoint;
-
-    public GameObject projectile;
 
     private Transform player;
 
@@ -35,12 +28,12 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        if (Vector3.Distance(transform.position, player.position) <= attackRaduis) { playerInAttack = true; }
-        if (Vector3.Distance(transform.position, player.position) > attackRaduis) { playerInAttack = false; }
+        if (Vector3.Distance(transform.position, player.position) <= stats.attackRadius) { playerInAttack = true; }
+        if (Vector3.Distance(transform.position, player.position) > stats.attackRadius) { playerInAttack = false; }
 
         if (!playerInRaduis && !playerInAttack)
         {
-            Collider[] collidersInRaduis = Physics.OverlapSphere(transform.position, detectionRadius, playerMask);
+            Collider[] collidersInRaduis = Physics.OverlapSphere(transform.position, stats.detectionRadius, stats.playerMask);
             foreach (Collider collider in collidersInRaduis)
             {
                 if (collider.gameObject.CompareTag("Player"))
@@ -54,7 +47,7 @@ public class EnemyAI : MonoBehaviour
         {
 
             rayCastPoint.LookAt(player);
-            if (Physics.Raycast(rayCastPoint.position, rayCastPoint.forward, out RaycastHit hit, detectionRadius, detectionMask))
+            if (Physics.Raycast(rayCastPoint.position, rayCastPoint.forward, out RaycastHit hit, stats.detectionRadius, stats.detectionMask))
             {
                 if (hit.collider.gameObject.CompareTag("Player"))
                 {
@@ -72,21 +65,21 @@ public class EnemyAI : MonoBehaviour
 
         if (playerInAttack && Time.time >= nextTimeToFire)
         {
-            nextTimeToFire = Time.time + 1f / fireRate;
+            nextTimeToFire = Time.time + 1f / stats.fireRate;
             Attack();       
         }
     }
 
     public void Attack()
     {
-        Rigidbody projectileRb = Instantiate(projectile, shootPoint.position, shootPoint.rotation).GetComponent<Rigidbody>();
+        Rigidbody projectileRb = Instantiate(stats.projectile, shootPoint.position, shootPoint.rotation).GetComponent<Rigidbody>();
         projectileRb.transform.forward = shootPoint.forward;
         projectileRb.AddForce(shootPoint.forward * 45, ForceMode.Impulse);
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.DrawWireSphere(transform.position, stats.detectionRadius);
     }
 
 }

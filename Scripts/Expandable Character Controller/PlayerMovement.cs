@@ -3,56 +3,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))] //if the script is placed on an object that does not have a character controller then it will add one
 public class PlayerMovement : MonoBehaviour
 {
+    public PlayerMovementStats stats;
+
     [Tooltip("The Player Controller")]
     public CharacterController playerController;
     [Tooltip("The Child Cam of this Object")]
     public Camera mainCam;
     [Tooltip("The Flashlight Object To Enable and Disable")]
     public Light flashLight;
-    [Tooltip("Move Speed With No Run")]
-    public float moveSpeed = 5;
-    [Tooltip("Movement Speed While Running")]
-    public float runSpeed = 8;
-    [Tooltip("The Max Amount of Staminia")]
-    public float maxStamina = 10;
     [Tooltip("The Remaining Staminia")]
     public float currentStamina = 10;
-    [Tooltip("The Sensitivity of The Mouse")]
-    public float mouseSensitivity = 500;
-    [Tooltip("The Gravity Force")]
-    public float gravity = -9.81f;
     [Tooltip("How Small The Player Should Get While Crouching")]
     public float crouchHeight;
 
-    [Tooltip("The Size of The Sphere when Checking for Ground")]
-    public float groundDistance = 0.1f;
-    [Tooltip("The Force of The Jump")]
-    public float jumpHeight = 3;
-    [Tooltip("How High The Player Should Jump When Double Jumping")]
-    public float doubleJumpHeight = 6;
     [Tooltip("The Object Where To Check for Ground")]
     public GameObject groundCheck;
-    [Tooltip("The Objects That Are Ground")]
-    public LayerMask groundMask;
 
-    [Header("Should Use")]
-    public bool shouldUseStaminia = true;
-    public bool hasRun = true;
-    public bool hasGravity = true;
-    public bool canCrouch = true;
-    public bool shouldUseJump = true;
-    public bool shouldUseDoubleJump = true;
-    public bool hasAirStrafe = true;
-    public bool hasFlashlight;
-    [Header("Key Binds")]
-    public KeyCode jumpKey = KeyCode.Space;
-    public KeyCode crouchKey = KeyCode.LeftControl;
-    public KeyCode runKey = KeyCode.LeftShift;
-    public KeyCode flashLightKey = KeyCode.F;
+    public StarndardActions actions;
 
     //privates
     private Vector3 velocity;
@@ -68,12 +40,28 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        actions = new StarndardActions();
+
         playerController = GetComponent<CharacterController>(); //auto assigning the character controller;
-        if (shouldUseStaminia == true)
-            currentStamina = maxStamina; //setting the current stamina on start;
+        if (stats.shouldUseStaminia == true)
+            currentStamina = stats.maxStamina; //setting the current stamina on start;
 
         startPlayerHeight = playerController.height; //setting the player to the max height;
     }
+
+    #region
+
+    private void OnEnable()
+    {
+        actions.Enable();
+    }
+
+    private void OnDisable()
+    {
+        actions.Disable();
+    }
+
+    #endregion
 
     void Start()
     {
@@ -83,42 +71,44 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.transform.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.transform.position, stats.groundDistance, stats.groundMask);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -3f;
             hasUsedDoubleJump = false;
         }
         
-        if(isGrounded && hasAirStrafe == false)
+        if(isGrounded && stats.hasAirStrafe == false)
         {
-            xVector = Input.GetAxisRaw("Horizontal"); //getting a or d input
-            zVector = Input.GetAxisRaw("Vertical"); //getting w or s input
+            xVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().x; //getting a or d input
+            zVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().y; //getting w or s input
+            if (xVector != 0)
+                Debug.Log(xVector);
         }
 
-        if(hasAirStrafe == true)
+        if(stats.hasAirStrafe == true)
         {
-            xVector = Input.GetAxisRaw("Horizontal"); //getting a or d input
-            zVector = Input.GetAxisRaw("Vertical"); //getting w or s input
+            xVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().x; //getting a or d input
+            zVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().y; //getting w or s input
         }
         
         Vector3 move = transform.right * xVector + transform.forward * zVector;
-        playerController.Move(move * moveSpeed * Time.deltaTime);
+        playerController.Move(move * stats.moveSpeed * Time.deltaTime);
 
-        if (Input.GetKey(runKey) && canRun == true && hasRun == true) //Checking if the player can run
+        if (actions.StarndardInput.Run.ReadValue<float>() == 1 && canRun == true && stats.hasRun == true) //Checking if the player can run
         {
-            playerController.Move(move * runSpeed * Time.deltaTime);
-            if (shouldUseStaminia == true)
+            playerController.Move(move * stats.runSpeed * Time.deltaTime);
+            if (stats.shouldUseStaminia == true)
                 currentStamina -= Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(jumpKey) && shouldUseJump) //Cecking if the player can jump
+        if (actions.StarndardInput.Jump.ReadValue<float>() == 1 && stats.shouldUseJump) //Cecking if the player can jump
             Jump();
 
-        if(Input.GetKeyDown(jumpKey) && shouldUseDoubleJump && hasUsedDoubleJump == false) //Checking if the player can double jump
+        if(actions.StarndardInput.Jump.ReadValue<float>() == 1 && stats.shouldUseDoubleJump && hasUsedDoubleJump == false) //Checking if the player can double jump
             DoubleJump();
 
-        if (Input.GetKey(crouchKey) && canCrouch) //Checking if the player can crouch
+        if (actions.StarndardInput.Crouch.ReadValue<float>() == 1 && stats.canCrouch) //Checking if the player can crouch
         {
             playerController.height = crouchHeight;
         }
@@ -136,15 +126,15 @@ public class PlayerMovement : MonoBehaviour
             canRun = true;
         }
 
-        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+        currentStamina = Mathf.Clamp(currentStamina, 0, stats.maxStamina);
 
-        if (hasGravity == true) //checking for gravity
-            velocity.y += gravity * Time.deltaTime;
+        if (stats.hasGravity == true) //checking for gravity
+            velocity.y += stats.gravity * Time.deltaTime;
 
         playerController.Move(velocity * Time.deltaTime); //moving the player
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = actions.StarndardInput.VerticalInput.ReadValue<Vector2>().x * stats.mouseSensitivity * Time.deltaTime;
+        float mouseY = actions.StarndardInput.VerticalInput.ReadValue<Vector2>().y * stats.mouseSensitivity * Time.deltaTime;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -85f, 65f); //clamping the vertical rotation of the camera
@@ -152,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         mainCam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         transform.Rotate(Vector3.up * mouseX);
 
-        if(Input.GetKeyDown(flashLightKey) && hasFlashlight)
+        if(actions.StarndardInput.FlashLight.ReadValue<float>() == 1 && stats.hasFlashlight)
         {
             if(flashLightEnabled == false)
             {
@@ -175,8 +165,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded == true)
         {
-            velocity.y = jumpHeight; //Applying The Force
-            velocity.y -= gravity * Time.deltaTime; //Applying The Gravity
+            velocity.y = stats.jumpHeight; //Applying The Force
+            velocity.y -= stats.gravity * Time.deltaTime; //Applying The Gravity
             playerController.Move(velocity * Time.deltaTime); //Moving The Player
         }
     }
@@ -185,8 +175,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(isGrounded == false && hasUsedDoubleJump == false)
         {
-            velocity.y = doubleJumpHeight; //Applying The Force
-            velocity.y -= gravity * Time.deltaTime; //Applying The Gravity
+            velocity.y = stats.doubleJumpHeight; //Applying The Force
+            velocity.y -= stats.gravity * Time.deltaTime; //Applying The Gravity
             playerController.Move(velocity * Time.deltaTime); //Moving The Player
             hasUsedDoubleJump = true;
         }

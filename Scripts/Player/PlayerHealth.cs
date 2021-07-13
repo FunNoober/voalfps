@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class PlayerHealth : MonoBehaviour
 
     public GameObject deathUI;
 
+    public Slider healthBar;
+    public Slider shieldBar;
+
     private bool shieldActive = true;
     private bool isDead;
 
@@ -22,6 +26,17 @@ public class PlayerHealth : MonoBehaviour
         shieldActive = true;
         deathUI.SetActive(false);
         Time.timeScale = 1;
+
+        healthBar.value = currentHealth;
+        shieldBar.value = currentShield;
+
+        StartCoroutine(UpdateBars());
+    }
+
+    private void Update()
+    {
+        currentHealth = Mathf.Clamp(currentHealth, 0, 100);
+        currentShield = Mathf.Clamp(currentShield, 0, 100);
     }
 
     private void FixedUpdate()
@@ -44,5 +59,16 @@ public class PlayerHealth : MonoBehaviour
         deathUI.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
+    }
+
+    public IEnumerator UpdateBars()
+    {
+        while(true)
+        {
+            healthBar.value = currentHealth;
+            shieldBar.value = currentShield;
+
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }

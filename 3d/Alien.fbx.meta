@@ -1,22 +1,14 @@
 fileFormatVersion: 2
-guid: 2be54d40c59a7ce44a7dea03f63f0322
+guid: 7a71e56fb20740748bd252a4a8cf434b
 ModelImporter:
   serializedVersion: 21100
-  internalIDToNameTable:
-  - first:
-      74: 8542602032137324248
-    second: Remastered
+  internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: LowPoly
+      name: Material.001
     second: {fileID: 2100000, guid: 0ece857de9b3f794a96cc232af308250, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: OrangeBright
-    second: {fileID: 2100000, guid: b9ed8c84f7c25804a95339c511691b9b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

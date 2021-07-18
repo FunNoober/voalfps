@@ -89,6 +89,14 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ConsoleKey"",
+                    ""type"": ""Button"",
+                    ""id"": ""ef6a6f33-6afe-4b22-876a-aba3e9f24a5a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -421,6 +429,17 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                     ""action"": ""Switch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1dd1df6-b85f-4af2-9c89-e8f3b82f82d1"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ConsoleKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -444,6 +463,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         m_StarndardInput_FlashLight = m_StarndardInput.FindAction("FlashLight", throwIfNotFound: true);
         m_StarndardInput_Reload = m_StarndardInput.FindAction("Reload", throwIfNotFound: true);
         m_StarndardInput_Switch = m_StarndardInput.FindAction("Switch", throwIfNotFound: true);
+        m_StarndardInput_ConsoleKey = m_StarndardInput.FindAction("ConsoleKey", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -502,6 +522,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
     private readonly InputAction m_StarndardInput_FlashLight;
     private readonly InputAction m_StarndardInput_Reload;
     private readonly InputAction m_StarndardInput_Switch;
+    private readonly InputAction m_StarndardInput_ConsoleKey;
     public struct StarndardInputActions
     {
         private @StarndardActions m_Wrapper;
@@ -515,6 +536,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         public InputAction @FlashLight => m_Wrapper.m_StarndardInput_FlashLight;
         public InputAction @Reload => m_Wrapper.m_StarndardInput_Reload;
         public InputAction @Switch => m_Wrapper.m_StarndardInput_Switch;
+        public InputAction @ConsoleKey => m_Wrapper.m_StarndardInput_ConsoleKey;
         public InputActionMap Get() { return m_Wrapper.m_StarndardInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -551,6 +573,9 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 @Switch.started -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnSwitch;
                 @Switch.performed -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnSwitch;
                 @Switch.canceled -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnSwitch;
+                @ConsoleKey.started -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnConsoleKey;
+                @ConsoleKey.performed -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnConsoleKey;
+                @ConsoleKey.canceled -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnConsoleKey;
             }
             m_Wrapper.m_StarndardInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -582,6 +607,9 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 @Switch.started += instance.OnSwitch;
                 @Switch.performed += instance.OnSwitch;
                 @Switch.canceled += instance.OnSwitch;
+                @ConsoleKey.started += instance.OnConsoleKey;
+                @ConsoleKey.performed += instance.OnConsoleKey;
+                @ConsoleKey.canceled += instance.OnConsoleKey;
             }
         }
     }
@@ -606,5 +634,6 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         void OnFlashLight(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnSwitch(InputAction.CallbackContext context);
+        void OnConsoleKey(InputAction.CallbackContext context);
     }
 }

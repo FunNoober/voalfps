@@ -10,7 +10,7 @@ public class EnemyHealth : MonoBehaviour
     private void Awake()
     {
         currentHealth = startHealth;
-        if(WaveSpawner.spawner != null) { WaveSpawner.spawner.onKilled += Die; }
+        if(WaveSpawner.spawner != null) { WaveSpawner.onKilled += Die; }
     }
 
     private void Update()

@@ -186,6 +186,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 4c78b6d2be96fa34a8d3464ad6dc032f, type: 2}
   rayCastPoint: {fileID: 6805484225513804112}
   shootPoint: {fileID: 6805484226517624678}
+  chasePlayerOnSpawn: 0
 --- !u!114 &6805484225688098042
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+/*dependencies : deathUI, healthBar, shieldBar, DevConsole*/
 public class PlayerHealth : MonoBehaviour
 {
     public int startShield = 100;
@@ -19,6 +21,8 @@ public class PlayerHealth : MonoBehaviour
     private bool shieldActive = true;
     private bool isDead;
 
+    private bool hasInvulnerability;
+
     private void Awake()
     {
         currentShield = startShield;
@@ -31,6 +35,9 @@ public class PlayerHealth : MonoBehaviour
         shieldBar.value = currentShield;
 
         StartCoroutine(UpdateBars());
+
+        DevConsole.giveHealthAction += EnableInvulnerability;
+        DevConsole.takeHealthAction += DisableInvulnerability;
     }
 
     private void Update()
@@ -41,16 +48,19 @@ public class PlayerHealth : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(currentShield <= 0) { shieldActive = false; }
-        if(currentHealth <= 0 && isDead == false) { Die(); }
+        if (currentShield <= 0) { shieldActive = false; }
+        if (currentHealth <= 0 && isDead == false) { Die(); }
     }
 
     public void TakeDamage(int amount)
     {
-        if (shieldActive == true)
-            currentShield -= amount;
-        if (shieldActive == false)
-            currentHealth -= amount;
+        if (hasInvulnerability == false)
+        {
+            if (shieldActive == true)
+                currentShield -= amount;
+            if (shieldActive == false)
+                currentHealth -= amount;
+        }
     }
 
     public void Die()
@@ -63,7 +73,7 @@ public class PlayerHealth : MonoBehaviour
 
     public IEnumerator UpdateBars()
     {
-        while(true)
+        while (true)
         {
             healthBar.value = currentHealth;
             shieldBar.value = currentShield;
@@ -71,4 +81,18 @@ public class PlayerHealth : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
     }
+
+    #region
+
+    public void EnableInvulnerability()
+    {
+        hasInvulnerability = true;
+    }
+
+    public void DisableInvulnerability()
+    {
+        hasInvulnerability = false;
+    }
+
+    #endregion
 }

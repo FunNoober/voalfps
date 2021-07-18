@@ -32,7 +32,7 @@ public class WeaponSwitch : MonoBehaviour
     {
         int beforeCurrentWeapon = currentWeapon;
 
-        if (actions.StarndardInput.Switch.ReadValue<float>() == 1) 
+        if (actions.StarndardInput.Switch.triggered) 
         {
             if (currentWeapon >= transform.childCount - 1)
                 currentWeapon = 0;

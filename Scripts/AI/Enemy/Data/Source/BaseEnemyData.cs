@@ -11,4 +11,9 @@ public class BaseEnemyData : ScriptableObject
     public LayerMask detectionMask;
     public LayerMask playerMask;
     public GameObject projectile;
+
+    public bool useAnimations;
+
+    public string walkAnimationBool;
+    public string shootAnimation;
 }

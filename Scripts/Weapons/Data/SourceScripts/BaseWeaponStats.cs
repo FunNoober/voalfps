@@ -14,7 +14,22 @@ public class BaseWeaponStats : ScriptableObject
 
     public float reloadTime;
 
+    public float bobWhileRunning = 0.03f;
+    public float runBobSpeed = 6f;
+    public float baseBob = 0.01f;
+    public float baseBobSpeed = 2f;
+
     public LayerMask shootMask;
+
+    public enum WeaponType
+    {
+        OneBullet,
+        Spread
+    }
+
+    public WeaponType type;
+
+    public float spead;
     
     [Header("Animations")]
     public AnimationClip shootClip;

@@ -10,6 +10,8 @@ public class EnemyAI : MonoBehaviour
     public Transform rayCastPoint;
     public Transform shootPoint;
 
+    public bool chasePlayerOnSpawn;
+
     private Transform player;
 
     private bool playerInRaduis;
@@ -20,10 +22,16 @@ public class EnemyAI : MonoBehaviour
 
     private NavMeshAgent agent;
 
+    private Animator animator;
+
     private void Awake()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+
+        if (chasePlayerOnSpawn == true)
+            agent.SetDestination(player.position);
     }
 
     private void Update()
@@ -58,15 +66,35 @@ public class EnemyAI : MonoBehaviour
 
         if (playerInSight && playerInRaduis)
         {
+            if (animator != null && stats.useAnimations)
+            {
+                animator.SetBool(stats.walkAnimationBool, true);
+                animator.SetBool(stats.shootAnimation, false);
+            }
             agent.SetDestination(player.position);
         }
 
-        if (playerInAttack) { agent.SetDestination(transform.position); }
+        if (playerInAttack)
+        {
+            agent.SetDestination(transform.position);
+
+            var lookPos = player.position - transform.position;
+            lookPos.y = 0;
+            transform.rotation = Quaternion.LookRotation(lookPos);
+
+            if (animator != null && stats.useAnimations)
+            {
+                animator.SetBool(stats.walkAnimationBool, false);
+                animator.SetBool(stats.shootAnimation, true);
+            }
+
+            shootPoint.LookAt(player.position);
+        }
 
         if (playerInAttack && Time.time >= nextTimeToFire)
         {
             nextTimeToFire = Time.time + 1f / stats.fireRate;
-            Attack();       
+            Attack();
         }
     }
 

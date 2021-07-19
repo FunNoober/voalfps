@@ -43,7 +43,8 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     private void OnEnable()
     {
-        WeaponManager.current.currentIndex = this.weaponId;
+        if(WeaponManager.current != null)
+            WeaponManager.current.currentIndex = weaponId;
         actions.Enable();
     }
 

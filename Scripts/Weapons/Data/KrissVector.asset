@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c30f6e707dfdb8a4f9baa0d316b75ed4, type: 3}
-  m_Name: Pistol
+  m_Name: KrissVector
   m_EditorClassIdentifier: 
-  maxReserve: 10
-  magSize: 10
-  fireRate: 0.85
+  maxReserve: 25
+  magSize: 25
+  fireRate: 15
   range: 550
   damage: 15
   reloadTime: 3
-  bobWhileRunning: 0.03
+  bobWhileRunning: 0.05
   runBobSpeed: 6
   baseBob: 0.01
   baseBobSpeed: 2

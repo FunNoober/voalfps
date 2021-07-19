@@ -9,6 +9,8 @@ public class WeaponManager : MonoBehaviour
 
     private void Awake()
     {
+        if(current != null) { Debug.Log("What>>>???"); return; }
+
         if (current == null)
             current = this;
     }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd84aabfec542343b5c5ad00a5b497a, type: 3}
   m_Name: SimpleWaveSpawner
   m_EditorClassIdentifier: 
-  enemyToSpawn: {fileID: 6805484225688098018, guid: ef1944905cb981741bbdb271a94535ee,
+  enemyToSpawn: {fileID: 6451670408893945745, guid: 4d3cf3fd4b4d99148829dd43e866b45b,
     type: 3}

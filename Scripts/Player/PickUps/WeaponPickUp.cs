@@ -7,11 +7,14 @@ public class WeaponPickUp : MonoBehaviour
     public Transform weaponToPickUp;
     public Transform weaponHolder;
 
+    public bool useAnimations = true;
+
     private GameObject[] weaponsActive;
 
     private void Awake()
     {
-        LeanTween.moveLocalY(gameObject, transform.position.y + 0.5f, 1f).setEaseInCubic().setEaseOutCubic().setLoopPingPong();
+        if(useAnimations == true)
+            LeanTween.moveLocalY(gameObject, transform.position.y + 0.5f, 1f).setEaseInCubic().setEaseOutCubic().setLoopPingPong();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Input/StarndardActions.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/_project fn/Input/StarndardActions.inputactions'
 
 using System;
 using System.Collections;
@@ -94,6 +94,14 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                     ""name"": ""ConsoleKey"",
                     ""type"": ""Button"",
                     ""id"": ""ef6a6f33-6afe-4b22-876a-aba3e9f24a5a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""3a53f3cb-19ec-45fe-baf6-91904384f84a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -440,6 +448,28 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                     ""action"": ""ConsoleKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0503ad85-603a-4ea8-8153-abae4dcd1d76"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""526c2b95-9c1f-4bf0-a8b1-9e19f9916cfb"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -464,6 +494,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         m_StarndardInput_Reload = m_StarndardInput.FindAction("Reload", throwIfNotFound: true);
         m_StarndardInput_Switch = m_StarndardInput.FindAction("Switch", throwIfNotFound: true);
         m_StarndardInput_ConsoleKey = m_StarndardInput.FindAction("ConsoleKey", throwIfNotFound: true);
+        m_StarndardInput_Interact = m_StarndardInput.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -523,6 +554,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
     private readonly InputAction m_StarndardInput_Reload;
     private readonly InputAction m_StarndardInput_Switch;
     private readonly InputAction m_StarndardInput_ConsoleKey;
+    private readonly InputAction m_StarndardInput_Interact;
     public struct StarndardInputActions
     {
         private @StarndardActions m_Wrapper;
@@ -537,6 +569,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         public InputAction @Reload => m_Wrapper.m_StarndardInput_Reload;
         public InputAction @Switch => m_Wrapper.m_StarndardInput_Switch;
         public InputAction @ConsoleKey => m_Wrapper.m_StarndardInput_ConsoleKey;
+        public InputAction @Interact => m_Wrapper.m_StarndardInput_Interact;
         public InputActionMap Get() { return m_Wrapper.m_StarndardInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -576,6 +609,9 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 @ConsoleKey.started -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnConsoleKey;
                 @ConsoleKey.performed -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnConsoleKey;
                 @ConsoleKey.canceled -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnConsoleKey;
+                @Interact.started -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_StarndardInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -610,6 +646,9 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 @ConsoleKey.started += instance.OnConsoleKey;
                 @ConsoleKey.performed += instance.OnConsoleKey;
                 @ConsoleKey.canceled += instance.OnConsoleKey;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -635,5 +674,6 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnSwitch(InputAction.CallbackContext context);
         void OnConsoleKey(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

@@ -533,6 +533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponToPickUp: {fileID: 0}
   weaponHolder: {fileID: 1791598578}
+  useAnimations: 1
 --- !u!135 &211077021
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5356,6 +5357,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 1
+  tweenUpAmount: 5.5
+  tweenDownAmount: 0.5
+  dP: 0
 --- !u!208 &1055230552
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -9244,6 +9248,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  tweenUpAmount: 5.5
+  tweenDownAmount: 0.5
+  dP: 0
 --- !u!65 &1926726710
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11251,7 +11258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f322c0bec9f9244fb5c54cba6456076, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: d0eab178559c07e429b717766cb271d9, type: 2}
+  stats: {fileID: 11400000, guid: 8cb0f56078324dc45b739ea861c220dd, type: 2}
   reserveAmmo: 0
   currentAmmo: 0
   weaponId: 0

@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Weapon Stats", menuName = "Scriptable Objects/Weapons/Guns/New Weapon Stats")]
 public class BaseWeaponStats : ScriptableObject
 {
+    public string objectName;
+
     public int maxReserve;
     public int magSize;
 
@@ -34,4 +36,7 @@ public class BaseWeaponStats : ScriptableObject
     [Header("Animations")]
     public AnimationClip shootClip;
     public AnimationClip reloadClip;
+
+    public bool canMod = false;
+    public bool canMod2Step = false;
 }

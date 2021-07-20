@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using com.funNoober.packages.cameraShake;
 using funNoober.voal2.packages.bob;
+using System.IO;
 
 
 public class BaseRaycastWeapon : MonoBehaviour
@@ -28,6 +28,51 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     private void Awake() //Weapon Setup
     {
+        string path = LoadingPathConsts.Path(stats.objectName);
+        if(File.Exists(LoadingPathConsts.Path(stats.objectName)))
+        {
+            string json = File.ReadAllText(path);
+            Stats jStats = JsonUtility.FromJson<Stats>(json);
+            #region JsonProcessing
+            if(stats.canMod && stats.canMod2Step)
+            {
+                stats.maxReserve = jStats.MaxReserve;
+                stats.magSize = jStats.MagSize;
+
+                stats.fireRate = jStats.FireRate;
+                stats.range = jStats.Range;
+                stats.damage = jStats.Damage;
+
+                stats.bobWhileRunning = jStats.BobWhileRunning;
+                stats.runBobSpeed = jStats.RunBobSpeed;
+                stats.baseBob = jStats.BaseBob;
+                stats.baseBobSpeed = jStats.BaseBobSpeed;
+            }
+            #endregion
+        }
+
+        else
+        {
+            Stats newJStats = new Stats
+            {
+                MaxReserve = stats.maxReserve,
+                MagSize = stats.magSize,
+                FireRate = stats.fireRate,
+                Range = stats.range,
+                Damage = stats.damage,
+                ReloadTime = stats.reloadTime,
+                BobWhileRunning = stats.bobWhileRunning,
+                RunBobSpeed = stats.runBobSpeed,
+                BaseBob = stats.baseBob,
+                BaseBobSpeed = stats.baseBobSpeed
+            };
+
+            string json = JsonUtility.ToJson(newJStats);
+
+            File.WriteAllText(LoadingPathConsts.Path(stats.objectName), json);
+        }
+
+        #region extra setup
         actions = new StarndardActions();
 
         canShoot = true;
@@ -39,6 +84,7 @@ public class BaseRaycastWeapon : MonoBehaviour
         animator = GetComponent<Animation>();
 
         DevConsole.giveAmmoAction += GiveMaxAmmo;
+        #endregion
     }
 
     private void OnEnable()
@@ -73,7 +119,6 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     public void Shoot()
     {
-        CameraShake.Shake(0.1f, Camera.main);
         muzzleFlash.SetActive(true);
         StartCoroutine(DisableMuzzleFlash());
         currentAmmo--;
@@ -106,8 +151,6 @@ public class BaseRaycastWeapon : MonoBehaviour
                 }
             }
         }
-        CameraShake.Reset(Camera.main);
-
     }
 
     public void GiveMaxAmmo()
@@ -139,5 +182,22 @@ public class BaseRaycastWeapon : MonoBehaviour
     public Vector3 randomVector3(float randomAmout)
     {
         return new Vector3(Random.Range(-randomAmout, randomAmout), Random.Range(-randomAmout, randomAmout), Random.Range(-randomAmout, randomAmout));
+    }
+
+    public class Stats
+    {
+        public int MaxReserve;
+        public int MagSize;
+
+        public float FireRate;
+        public float Range;
+        public int Damage;
+
+        public float ReloadTime;
+
+        public float BobWhileRunning;
+        public float RunBobSpeed;
+        public float BaseBob;
+        public float BaseBobSpeed;
     }
 }

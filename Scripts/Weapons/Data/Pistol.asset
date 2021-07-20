@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30f6e707dfdb8a4f9baa0d316b75ed4, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
+  objectName: pistol
   maxReserve: 10
   magSize: 10
   fireRate: 0.85
@@ -29,3 +30,5 @@ MonoBehaviour:
   spead: 0
   shootClip: {fileID: 0}
   reloadClip: {fileID: 0}
+  canMod: 0
+  canMod2Step: 0

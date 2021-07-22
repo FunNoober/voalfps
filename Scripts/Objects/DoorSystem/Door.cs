@@ -10,6 +10,8 @@ public class Door : MonoBehaviour
     public float tweenUpAmount = 5.5f;
     public float tweenDownAmount = 0.5f;
 
+    public float tweenSpeed = 2f;
+
     public enum DoorType
     {
         Open,
@@ -24,23 +26,23 @@ public class Door : MonoBehaviour
         CustomEventSystem.current.onDoorwayTriggerExit += OnDoorWayClose;
     }
 
-    private void OnDoorWayOpen(int id)
+    public void OnDoorWayOpen(int id)
     {
         if (id == this.id)
         {
             if(dP == DoorType.Open)
-                LeanTween.moveLocalY(gameObject,tweenUpAmount, 2f).setEaseInCubic();
+                LeanTween.moveLocalY(gameObject,tweenUpAmount, tweenSpeed).setEaseInCubic();
             if (dP == DoorType.Destroy)
                 gameObject.SetActive(false);
         }
     }
 
-    private void OnDoorWayClose(int id)
+    public void OnDoorWayClose(int id)
     {
         if(id == this.id)
         {
             if(dP == DoorType.Open)
-                LeanTween.moveLocalY(gameObject, tweenDownAmount, 2f).setEaseOutCubic();
+                LeanTween.moveLocalY(gameObject, tweenDownAmount, tweenSpeed).setEaseOutCubic();
             if (dP == DoorType.Destroy)
                 gameObject.SetActive(true);
         }

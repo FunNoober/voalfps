@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.UI;
 
-public class CustomButton : MonoBehaviour, IPointerClickHandler ,IPointerEnterHandler, IPointerExitHandler
+public class CustomButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public UnityEvent clickedEvent;
 

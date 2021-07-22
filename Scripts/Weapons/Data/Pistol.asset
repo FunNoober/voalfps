@@ -30,5 +30,5 @@ MonoBehaviour:
   spead: 0
   shootClip: {fileID: 0}
   reloadClip: {fileID: 0}
-  canMod: 0
-  canMod2Step: 0
+  canMod: 1
+  canMod2Step: 1

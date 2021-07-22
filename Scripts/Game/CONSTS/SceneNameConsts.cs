@@ -1,10 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class SceneNameConsts
 {
+    public static string MENU_NAME = "MainMenu";
     public static string TUTORIAL_NAME = "TutorialLevel";
     public static string LEVEL_1_NAME = "Level1";
     public static string LEVEL_2_NAME = "Level2";
+
+    public static void LoadLevel(string name)
+    {
+        SceneManager.LoadScene(name);
+    }
+
+    public static void LoadCurrentScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }

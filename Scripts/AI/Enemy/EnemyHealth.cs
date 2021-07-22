@@ -10,7 +10,9 @@ public class EnemyHealth : MonoBehaviour
     private void Awake()
     {
         currentHealth = startHealth;
-        if(WaveSpawner.spawner != null) { WaveSpawner.onKilled += Die; }
+        if(WaveSpawnerInfinity.spawner != null) { WaveSpawnerInfinity.spawner.onKilled += Die; }
+        if (CapedWaveSpawner.instance != null) CapedWaveSpawner.instance.onKilled += Die;
+        if (CapedWaveSpawner.instance != null) CapedWaveSpawner.instance.currentEnemiesAlive++;
     }
 
     private void Update()
@@ -20,7 +22,8 @@ public class EnemyHealth : MonoBehaviour
 
     public void Die()
     {
-        if(WaveSpawner.spawner != null) { WaveSpawner.spawner.currentEnemiesAlive--; }      
+        if(WaveSpawnerInfinity.spawner != null) { WaveSpawnerInfinity.spawner.currentEnemiesAlive--; }
+        if (CapedWaveSpawner.instance != null) CapedWaveSpawner.instance.currentEnemiesAlive--;
         Destroy(this.gameObject);
     }
 

@@ -105,6 +105,14 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc274c7b-70b3-4081-9d1f-fb51aaa148aa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -463,11 +471,33 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""526c2b95-9c1f-4bf0-a8b1-9e19f9916cfb"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84468a22-82ee-4874-aac1-a97c5c275526"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d29fee43-7c72-48fa-b0a3-b66adc16ef54"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -495,6 +525,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         m_StarndardInput_Switch = m_StarndardInput.FindAction("Switch", throwIfNotFound: true);
         m_StarndardInput_ConsoleKey = m_StarndardInput.FindAction("ConsoleKey", throwIfNotFound: true);
         m_StarndardInput_Interact = m_StarndardInput.FindAction("Interact", throwIfNotFound: true);
+        m_StarndardInput_Pause = m_StarndardInput.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -555,6 +586,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
     private readonly InputAction m_StarndardInput_Switch;
     private readonly InputAction m_StarndardInput_ConsoleKey;
     private readonly InputAction m_StarndardInput_Interact;
+    private readonly InputAction m_StarndardInput_Pause;
     public struct StarndardInputActions
     {
         private @StarndardActions m_Wrapper;
@@ -570,6 +602,7 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         public InputAction @Switch => m_Wrapper.m_StarndardInput_Switch;
         public InputAction @ConsoleKey => m_Wrapper.m_StarndardInput_ConsoleKey;
         public InputAction @Interact => m_Wrapper.m_StarndardInput_Interact;
+        public InputAction @Pause => m_Wrapper.m_StarndardInput_Pause;
         public InputActionMap Get() { return m_Wrapper.m_StarndardInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -612,6 +645,9 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 @Interact.started -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnInteract;
+                @Pause.started -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_StarndardInputActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_StarndardInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -649,6 +685,9 @@ public class @StarndardActions : IInputActionCollection, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -675,5 +714,6 @@ public class @StarndardActions : IInputActionCollection, IDisposable
         void OnSwitch(InputAction.CallbackContext context);
         void OnConsoleKey(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

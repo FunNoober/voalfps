@@ -14,6 +14,6 @@ public class Level1Manager : MonoBehaviour
     public IEnumerator StartMissionCountdown()
     {
         yield return new WaitForSeconds(60);
-        SceneManager.LoadScene(SceneNameConsts.LEVEL_2_NAME);
+        SceneManager.LoadScene(SceneNameConsts.LEVEL_1_NAME);
     }
 }

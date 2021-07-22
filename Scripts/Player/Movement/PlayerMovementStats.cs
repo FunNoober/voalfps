@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player Movement Stats", menuName = "Scriptable Objects/Player/Player Movement Data")]
 public class PlayerMovementStats : ScriptableObject
 {
+    public string objectName = "playermovementstats";
+
     public float moveSpeed = 5;
     public float runSpeed = 8;
     public float maxStamina = 10;
@@ -32,4 +34,7 @@ public class PlayerMovementStats : ScriptableObject
     public bool shouldUseDoubleJump = true;
     public bool hasAirStrafe = true;
     public bool hasFlashlight;
+
+    public bool canMod;
+    public bool canMod2Step;
 }

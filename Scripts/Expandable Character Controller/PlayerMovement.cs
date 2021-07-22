@@ -1,8 +1,7 @@
 /*Fun Noober 2021 Expandable First Person Movement System*/
-
 using System;
+using System.IO;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject groundCheck;
 
     public GameObject devConsole;
+    public GameObject pauseMenu;
 
     public StarndardActions actions;
 
@@ -45,11 +45,52 @@ public class PlayerMovement : MonoBehaviour
     private bool flashLightEnabled = false;
     private bool consoleIsEnabled = false;
     private bool inputEnabled;
+    private bool pauseActive;
 
     public static bool isRunning;
 
     void Awake()
     {
+        #region json
+        string path = LoadingPathConsts.Path(stats.objectName);
+        if(File.Exists(LoadingPathConsts.Path(stats.objectName)))
+        {
+            string json = File.ReadAllText(path);
+            Stats jStats = JsonUtility.FromJson<Stats>(json);
+
+            if(stats.canMod && stats.canMod2Step)
+            {
+                stats.moveSpeed = jStats.MoveSpeed;
+                stats.runSpeed = jStats.RunSpeed;
+                stats.maxStamina = jStats.MaxStamina;
+                stats.mouseSensitivity = jStats.MouseSensitivity;
+                stats.gravity = jStats.Gravity;
+
+                stats.jumpHeight = jStats.JumpHeight;
+                stats.doubleJumpHeight = jStats.DoubleJumpHeight;
+                stats.shouldUseDoubleJump = jStats.ShouldUseDoubleJump;
+            }
+        }
+        else
+        {
+            Stats newJStats = new Stats
+            {
+                MoveSpeed = stats.moveSpeed,
+                RunSpeed = stats.runSpeed,
+                MaxStamina = stats.maxStamina,
+                MouseSensitivity = stats.mouseSensitivity,
+                Gravity = stats.gravity,
+                JumpHeight = stats.jumpHeight,
+                DoubleJumpHeight = stats.doubleJumpHeight,
+                ShouldUseDoubleJump = stats.shouldUseDoubleJump
+            };
+
+            string json = JsonUtility.ToJson(newJStats);
+            File.WriteAllText(LoadingPathConsts.Path(stats.objectName), json);
+        }
+        #endregion
+
+        #region extra setup
         inputEnabled = true;
 
         actions = new StarndardActions();
@@ -59,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
             currentStamina = stats.maxStamina; //setting the current stamina on start;
 
         startPlayerHeight = playerController.height; //setting the player to the max height;
+        #endregion
     }
 
     #region
@@ -200,6 +242,9 @@ public class PlayerMovement : MonoBehaviour
                 return;
             }
         }
+
+        if (actions.StarndardInput.Pause.triggered)
+            PauseResume();
     }
 
 
@@ -224,9 +269,43 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void PauseResume()
+    {
+        if(pauseActive == true)
+        {
+            pauseMenu.SetActive(false);
+            pauseActive = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1;
+            return;
+        }
+        if(pauseActive == false)
+        {
+            pauseMenu.SetActive(true);
+            pauseActive = true;
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+            return;
+        }
+    }
+
     IEnumerator GiveStaminia()
     {
         yield return new WaitForSeconds(3); //waiting before giving stamina
         currentStamina += Time.deltaTime; //giving stamina back over time
+    }
+
+    public class Stats
+    {
+        public float MoveSpeed;
+        public float RunSpeed;
+        public float MaxStamina;
+        public float MouseSensitivity;
+        public float Gravity;
+
+        public float JumpHeight;
+        public float DoubleJumpHeight;
+
+        public bool ShouldUseDoubleJump;
     }
 }

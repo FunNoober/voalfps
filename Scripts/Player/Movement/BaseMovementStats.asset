@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bce6617971380204cab40c356a9f9a5a, type: 3}
   m_Name: BaseMovementStats
   m_EditorClassIdentifier: 
+  objectName: playermovementstats
   moveSpeed: 5
   runSpeed: 8
   maxStamina: 10
@@ -31,3 +32,5 @@ MonoBehaviour:
   shouldUseDoubleJump: 0
   hasAirStrafe: 1
   hasFlashlight: 1
+  canMod: 1
+  canMod2Step: 1

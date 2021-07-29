@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 603795bb6f9af8d428783df4a2c97555, type: 3}
+  m_Name: TexLoadData
+  m_EditorClassIdentifier: 
+  texsToLoad:
+  - matToChange: {fileID: 2100000, guid: e2607255ef171564694865fddb5f9ba5, type: 2}
+    texName: Truss_normal
+  - matToChange: {fileID: 2100000, guid: 27987e4e7f6a8c144ad124e071099c28, type: 2}
+    texName: Truss_normal
+  - matToChange: {fileID: 2100000, guid: 90a8472c36b373b448e2b8e4325b9589, type: 2}
+    texName: Concrete_normal

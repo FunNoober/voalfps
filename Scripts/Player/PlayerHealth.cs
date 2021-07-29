@@ -54,7 +54,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        if (hasInvulnerability == false)
+        if (hasInvulnerability == false || funNoober.gameConsts.GameConsts.isInvincible == false)
         {
             if (shieldActive == true)
                 currentShield -= amount;

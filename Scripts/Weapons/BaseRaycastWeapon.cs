@@ -26,8 +26,11 @@ public class BaseRaycastWeapon : MonoBehaviour
     private float nextTimeToFire;
     private bool canShoot;
 
+    private Vector3 startPos;
+
     private void Awake() //Weapon Setup
     {
+        #region JSON
         string path = LoadingPathConsts.Path(stats.objectName);
         if(File.Exists(LoadingPathConsts.Path(stats.objectName)))
         {
@@ -71,8 +74,10 @@ public class BaseRaycastWeapon : MonoBehaviour
 
             File.WriteAllText(LoadingPathConsts.Path(stats.objectName), json);
         }
+        #endregion
 
         #region extra setup
+        startPos = transform.position;
         actions = new StarndardActions();
 
         canShoot = true;
@@ -89,6 +94,7 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     private void OnEnable()
     {
+        transform.position = startPos;
         if(WeaponManager.current != null)
             WeaponManager.current.currentIndex = weaponId;
         actions.Enable();
@@ -121,7 +127,8 @@ public class BaseRaycastWeapon : MonoBehaviour
     {
         muzzleFlash.SetActive(true);
         StartCoroutine(DisableMuzzleFlash());
-        currentAmmo--;
+        if(funNoober.gameConsts.GameConsts.infiniteAmmo == false)
+            currentAmmo--;
 
         if (animator != null && stats.shootClip != null) { animator.clip = stats.shootClip; animator.Play(); }
 

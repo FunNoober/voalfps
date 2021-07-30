@@ -26,10 +26,19 @@ public class BaseRaycastWeapon : MonoBehaviour
     private float nextTimeToFire;
     private bool canShoot;
 
+<<<<<<< Updated upstream
     private Vector3 startPos;
 
     private void Awake() //Weapon Setup
     {
+=======
+    //private Vector3 startPos;
+
+    private void Awake() //Weapon Setup
+    {
+        gameObject.tag = "Gun";
+
+>>>>>>> Stashed changes
         #region JSON
         string path = LoadingPathConsts.Path(stats.objectName);
         if(File.Exists(LoadingPathConsts.Path(stats.objectName)))
@@ -77,7 +86,11 @@ public class BaseRaycastWeapon : MonoBehaviour
         #endregion
 
         #region extra setup
+<<<<<<< Updated upstream
         startPos = transform.position;
+=======
+        //startPos = transform.position;
+>>>>>>> Stashed changes
         actions = new StarndardActions();
 
         canShoot = true;
@@ -94,7 +107,11 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     private void OnEnable()
     {
+<<<<<<< Updated upstream
         transform.position = startPos;
+=======
+        //transform.position = startPos;
+>>>>>>> Stashed changes
         if(WeaponManager.current != null)
             WeaponManager.current.currentIndex = weaponId;
         actions.Enable();
@@ -102,6 +119,10 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     private void OnDisable()
     {
+<<<<<<< Updated upstream
+=======
+        //transform.position = startPos;
+>>>>>>> Stashed changes
         actions.Disable();
     }
 

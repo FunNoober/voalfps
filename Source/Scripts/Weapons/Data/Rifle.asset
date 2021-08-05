@@ -19,11 +19,7 @@ MonoBehaviour:
   range: 550
   damage: 25
   reloadTime: 5
-<<<<<<< Updated upstream
-  bobWhileRunning: 0.07
-=======
   bobWhileRunning: 0.05
->>>>>>> Stashed changes
   runBobSpeed: 6
   baseBob: 0.01
   baseBobSpeed: 2
@@ -34,5 +30,7 @@ MonoBehaviour:
   spead: 0
   shootClip: {fileID: 0}
   reloadClip: {fileID: 0}
+  impactEffect: {fileID: 9151611389208382847, guid: ae8155f0db97e00479cd78d1fbb407c0,
+    type: 3}
   canMod: 1
   canMod2Step: 1

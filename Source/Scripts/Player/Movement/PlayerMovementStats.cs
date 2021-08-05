@@ -12,6 +12,7 @@ public class PlayerMovementStats : ScriptableObject
     public float maxStamina = 10;
     public float mouseSensitivity = 15;
     public float gravity = -9.81f;
+    public float jetpackForce;
 
     [Space(height: 20)]
 

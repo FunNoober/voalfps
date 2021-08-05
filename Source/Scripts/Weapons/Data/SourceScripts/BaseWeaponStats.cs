@@ -37,6 +37,8 @@ public class BaseWeaponStats : ScriptableObject
     public AnimationClip shootClip;
     public AnimationClip reloadClip;
 
+    public GameObject impactEffect;
+
     public bool canMod = false;
     public bool canMod2Step = false;
 }

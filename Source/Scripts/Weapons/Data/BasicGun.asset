@@ -30,5 +30,7 @@ MonoBehaviour:
   spead: 5
   shootClip: {fileID: 7400000, guid: 865d93b6602ce1b40b63b9cd71eefe2c, type: 2}
   reloadClip: {fileID: 7400000, guid: bf994eb0b71fab941b0cb722fbe6a7b5, type: 2}
+  impactEffect: {fileID: 9151611389208382847, guid: ae8155f0db97e00479cd78d1fbb407c0,
+    type: 3}
   canMod: 1
   canMod2Step: 1

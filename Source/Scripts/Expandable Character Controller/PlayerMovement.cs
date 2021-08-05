@@ -1,64 +1,56 @@
-/*Fun Noober 2021 Expandable First Person Movement System*/
 using System;
 using System.IO;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))] //if the script is placed on an object that does not have a character controller then it will add one
+[RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
+    public Jump_s sJump;
+    public Flashlight_s sFlashlight;
+    public DevConsole_s sConsole;
+    public PauseResume_s sPauseResume;
+    public Crouch_s sCrouch;
+
     public PlayerMovementStats stats;
-
-    [Tooltip("The Player Controller")]
     public CharacterController playerController;
-    [Tooltip("The Child Cam of this Object")]
     public Camera mainCam;
-    [Tooltip("The Flashlight Object To Enable and Disable")]
-    public Light flashLight;
-    [Tooltip("The Remaining Staminia")]
-    public float currentStamina = 10;
-    [Tooltip("How Small The Player Should Get While Crouching")]
-    public float crouchHeight;
-
-    [Tooltip("The Object Where To Check for Ground")]
+    public float maxJetpack = 10;
     public GameObject groundCheck;
-
-    public GameObject devConsole;
-    public GameObject pauseMenu;
-
     public StarndardActions actions;
-
-    //privates
+    public enum ShiftType
+    {
+        sprint,
+        jetpack
+    }
+    public ShiftType shiftType;
+    [SerializeField]
+    private float jetpackRemaining;
     private Vector3 velocity;
     private bool isGrounded;
-    private bool canRun = true;
-
+    [SerializeField]
+    private bool canJetpack => jetpackRemaining >= 0;
     private float xRotation;
-    private float startPlayerHeight;
     private float mouseX;
     private float mouseY;
-
     private float xVector;
     private float zVector;
     private bool hasUsedDoubleJump = false;
-    private bool flashLightEnabled = false;
-    private bool consoleIsEnabled = false;
     private bool inputEnabled;
-    private bool pauseActive;
-
+    private bool isUsingJetpack;
     public static bool isRunning;
 
     void Awake()
     {
         #region json
         string path = LoadingPathConsts.Path(stats.objectName);
-        if(File.Exists(LoadingPathConsts.Path(stats.objectName)))
+        if (File.Exists(LoadingPathConsts.Path(stats.objectName)))
         {
             string json = File.ReadAllText(path);
             Stats jStats = JsonUtility.FromJson<Stats>(json);
 
-            if(stats.canMod && stats.canMod2Step)
+            if (stats.canMod && stats.canMod2Step)
             {
                 stats.moveSpeed = jStats.MoveSpeed;
                 stats.runSpeed = jStats.RunSpeed;
@@ -95,11 +87,7 @@ public class PlayerMovement : MonoBehaviour
 
         actions = new StarndardActions();
 
-        playerController = GetComponent<CharacterController>(); //auto assigning the character controller;
-        if (stats.shouldUseStaminia == true)
-            currentStamina = stats.maxStamina; //setting the current stamina on start;
-
-        startPlayerHeight = playerController.height; //setting the player to the max height;
+        playerController = GetComponent<CharacterController>();
         #endregion
     }
 
@@ -119,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; //disabling the cursor
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
 
@@ -136,16 +124,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isGrounded && stats.hasAirStrafe == false)
             {
-                xVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().x; //getting a or d input
-                zVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().y; //getting w or s input
+                xVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().x;
+                zVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().y;
                 if (xVector != 0)
                     Debug.Log(xVector);
             }
 
             if (stats.hasAirStrafe == true)
             {
-                xVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().x; //getting a or d input
-                zVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().y; //getting w or s input
+                xVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().x;
+                zVector = actions.StarndardInput.HorizontalInput.ReadValue<Vector2>().y;
             }
         }
 
@@ -153,146 +141,77 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * xVector + transform.forward * zVector;
         playerController.Move(move * stats.moveSpeed * Time.deltaTime);
 
-        if (actions.StarndardInput.Run.ReadValue<float>() == 1 && canRun == true && stats.hasRun == true) //Checking if the player can run
+        if (actions.StarndardInput.Run.ReadValue<float>() == 1)
         {
-            playerController.Move(move * stats.runSpeed * Time.deltaTime);
-            isRunning = true;
-            if (stats.shouldUseStaminia == true)
-                currentStamina -= Time.deltaTime;
+            switch (shiftType)
+            {
+                case ShiftType.sprint:
+                    if (stats.hasRun == true)
+                    {
+                        playerController.Move(move * stats.runSpeed * Time.deltaTime);
+                        isRunning = true;
+                    }
+                    break;
+                case ShiftType.jetpack:
+                    if (canJetpack == true)
+                    {
+                        velocity.y = stats.jetpackForce;
+                        velocity.y -= stats.gravity * Time.deltaTime;
+                        playerController.Move(velocity * Time.deltaTime);
+                        jetpackRemaining -= Time.deltaTime;
+                        isUsingJetpack = true;
+                    }
+                    break;
+            }
         }
-        else { isRunning = false; }
+        else { isRunning = false; isUsingJetpack = false; }
 
-        if (actions.StarndardInput.Jump.ReadValue<float>() == 1 && stats.shouldUseJump) //Cecking if the player can jump
-            Jump();
+        if (jetpackRemaining <= maxJetpack && isUsingJetpack == false)
+        {
+            jetpackRemaining += Time.deltaTime;
+        }
 
-        if (actions.StarndardInput.Jump.ReadValue<float>() == 1 && stats.shouldUseDoubleJump && hasUsedDoubleJump == false) //Checking if the player can double jump
+        velocity.y += sJump.h_Jump(actions, stats, isGrounded);
+
+        if (actions.StarndardInput.Jump.ReadValue<float>() == 1 && stats.shouldUseDoubleJump && hasUsedDoubleJump == false)
             DoubleJump();
 
-        if (actions.StarndardInput.Crouch.ReadValue<float>() == 1 && stats.canCrouch) //Checking if the player can crouch
-        {
-            playerController.height = crouchHeight;
-        }
-        else
-            playerController.height = startPlayerHeight;
-
-        if (currentStamina <= 0) //If the stamina is below or is zero then it will disable the run
-        {
-            canRun = false;
-            StartCoroutine(GiveStaminia());
-        }
-
-        if (currentStamina > 0) //if the stamina is not 0 then the player can run
-        {
-            canRun = true;
-        }
-
-        currentStamina = Mathf.Clamp(currentStamina, 0, stats.maxStamina);
-
-        if (stats.hasGravity == true) //checking for gravity
+        if (stats.hasGravity == true)
             velocity.y += stats.gravity * Time.deltaTime;
 
-        playerController.Move(velocity * Time.deltaTime); //moving the player
+        playerController.Move(velocity * Time.deltaTime);
 
 
-        if(inputEnabled == true)
+        if (inputEnabled == true)
         {
             mouseX = actions.StarndardInput.VerticalInput.ReadValue<Vector2>().x * stats.mouseSensitivity * Time.deltaTime;
             mouseY = actions.StarndardInput.VerticalInput.ReadValue<Vector2>().y * stats.mouseSensitivity * Time.deltaTime;
         }
 
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -85f, 65f); //clamping the vertical rotation of the camera
+        xRotation = Mathf.Clamp(xRotation, -85f, 65f);
 
         mainCam.transform.localRotation = Quaternion.Euler(xRotation, 0, 0);
         transform.Rotate(Vector3.up * mouseX);
 
-        if (actions.StarndardInput.FlashLight.triggered && stats.hasFlashlight)
-        {
-            if (flashLightEnabled == false)
-            {
-                flashLight.gameObject.SetActive(true);
-                flashLightEnabled = true;
-                return;
-            }
+        sFlashlight.h_Flashlight(actions, stats);
 
-            if (flashLightEnabled == true)
-            {
-                flashLight.gameObject.SetActive(false);
-                flashLightEnabled = false;
-                return;
-            }
-        }
+        sConsole.h_Console(actions);
 
-        if (actions.StarndardInput.ConsoleKey.triggered)
-        {
-            if (consoleIsEnabled == false)
-            {
-                devConsole.SetActive(true);
-                consoleIsEnabled = true;
-                inputEnabled = false;
-                Cursor.lockState = CursorLockMode.None;
-                return;
-            }
-            else
-            {
-                devConsole.SetActive(false);
-                consoleIsEnabled = false;
-                inputEnabled = true;
-                Cursor.lockState = CursorLockMode.Locked;
-                return;
-            }
-        }
+        sPauseResume.h_PauseResume(actions);
 
-        if (actions.StarndardInput.Pause.triggered)
-            PauseResume();
-    }
-
-
-    void Jump()
-    {
-        if (isGrounded == true)
-        {
-            velocity.y = stats.jumpHeight; //Applying The Force
-            velocity.y -= stats.gravity * Time.deltaTime; //Applying The Gravity
-            playerController.Move(velocity * Time.deltaTime); //Moving The Player
-        }
+        sCrouch.h_Crouch(actions, stats, playerController);
     }
 
     void DoubleJump()
     {
         if (isGrounded == false && hasUsedDoubleJump == false)
         {
-            velocity.y = stats.doubleJumpHeight; //Applying The Force
-            velocity.y -= stats.gravity * Time.deltaTime; //Applying The Gravity
-            playerController.Move(velocity * Time.deltaTime); //Moving The Player
+            velocity.y = stats.doubleJumpHeight;
+            velocity.y -= stats.gravity * Time.deltaTime;
+            playerController.Move(velocity * Time.deltaTime);
             hasUsedDoubleJump = true;
         }
-    }
-
-    void PauseResume()
-    {
-        if(pauseActive == true)
-        {
-            pauseMenu.SetActive(false);
-            pauseActive = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1;
-            return;
-        }
-        if(pauseActive == false)
-        {
-            pauseMenu.SetActive(true);
-            pauseActive = true;
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0;
-            return;
-        }
-    }
-
-    IEnumerator GiveStaminia()
-    {
-        yield return new WaitForSeconds(3); //waiting before giving stamina
-        currentStamina += Time.deltaTime; //giving stamina back over time
     }
 
     public class Stats

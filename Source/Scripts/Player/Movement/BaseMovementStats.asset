@@ -18,6 +18,7 @@ MonoBehaviour:
   maxStamina: 10
   mouseSensitivity: 15
   gravity: -9.81
+  jetpackForce: 1
   groundDistance: 0.1
   jumpHeight: 3
   doubleJumpHeight: 6

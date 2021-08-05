@@ -26,19 +26,12 @@ public class BaseRaycastWeapon : MonoBehaviour
     private float nextTimeToFire;
     private bool canShoot;
 
-<<<<<<< Updated upstream
-    private Vector3 startPos;
-
-    private void Awake() //Weapon Setup
-    {
-=======
     //private Vector3 startPos;
 
     private void Awake() //Weapon Setup
     {
         gameObject.tag = "Gun";
 
->>>>>>> Stashed changes
         #region JSON
         string path = LoadingPathConsts.Path(stats.objectName);
         if(File.Exists(LoadingPathConsts.Path(stats.objectName)))
@@ -86,11 +79,7 @@ public class BaseRaycastWeapon : MonoBehaviour
         #endregion
 
         #region extra setup
-<<<<<<< Updated upstream
-        startPos = transform.position;
-=======
         //startPos = transform.position;
->>>>>>> Stashed changes
         actions = new StarndardActions();
 
         canShoot = true;
@@ -107,11 +96,7 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     private void OnEnable()
     {
-<<<<<<< Updated upstream
-        transform.position = startPos;
-=======
         //transform.position = startPos;
->>>>>>> Stashed changes
         if(WeaponManager.current != null)
             WeaponManager.current.currentIndex = weaponId;
         actions.Enable();
@@ -119,10 +104,7 @@ public class BaseRaycastWeapon : MonoBehaviour
 
     private void OnDisable()
     {
-<<<<<<< Updated upstream
-=======
         //transform.position = startPos;
->>>>>>> Stashed changes
         actions.Disable();
     }
 
@@ -159,6 +141,7 @@ public class BaseRaycastWeapon : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rayCastPoint.position, rayCastPoint.transform.forward, out hit, stats.range, stats.shootMask))
             {
+                Instantiate(stats.impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                 EnemyHealth health = hit.transform.gameObject.GetComponent<EnemyHealth>();
                 if (health != null)
                     health.TakeDamage(stats.damage);

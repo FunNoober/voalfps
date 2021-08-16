@@ -14,6 +14,11 @@ public static class SceneNameConsts
         SceneManager.LoadScene(name);
     }
 
+    public static void LoadLevelI(int index)
+    {
+        SceneManager.LoadScene(index);
+    }
+
     public static void LoadCurrentScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

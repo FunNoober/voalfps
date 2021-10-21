@@ -715,16 +715,16 @@ MonoBehaviour:
   onClicked:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092556238}
-        m_TargetAssemblyTypeName: CrossSceneManager, Assembly-CSharp
-        m_MethodName: LoadSceneString
-        m_Mode: 5
+      - m_Target: {fileID: 2092556239}
+        m_TargetAssemblyTypeName: LevelLoaderReciever, Assembly-CSharp
+        m_MethodName: LoadMission
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: LevelSelectScreen
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
   onEnter:
@@ -817,27 +817,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   infoText: {fileID: 762480834}
   levelText: {fileID: 1000189162}
+  missionToLoad: 0
   levels:
   - info: The tutorial level. Learn The ropes.
     levelName: Play [1]
+    mission: 3
   - info: Your first mission. Activate the engines.
     levelName: Play [2]
+    mission: 4
+  - info: The carrier is under attack
+    levelName: Play [2]
+    mission: 5
   - info: 
     levelName: 
+    mission: 0
   - info: 
     levelName: 
+    mission: 0
   - info: 
     levelName: 
+    mission: 0
   - info: 
     levelName: 
+    mission: 0
   - info: 
     levelName: 
+    mission: 0
   - info: 
     levelName: 
+    mission: 0
   - info: 
     levelName: 
-  - info: 
-    levelName: 
+    mission: 0
 --- !u!81 &2092556240
 AudioListener:
   m_ObjectHideFlags: 0

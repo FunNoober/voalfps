@@ -13,4 +13,10 @@ public class CrossSceneManager : MonoBehaviour
     {
         SceneNameConsts.LoadLevelI(index);
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("Application.Quit(); Sucessful");
+        Application.Quit();
+    }
 }

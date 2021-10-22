@@ -2,12 +2,12 @@
 This is the official V.O.A.L. FPS project produced by Fun Noober. If you have any bugs please report it in issues.
 
 <h2>Requirments</h2>
-Unity 3D
-A Code Editor - Visual Studio Code is recommended
-ProBuilder
-ProGrids
-Aura 2
-Lean Tween
+Unity 3D <br/>
+A Code Editor - Visual Studio Code is recommended <br/>
+ProBuilder <br/>
+ProGrids <br/>
+Aura 2 <br/>
+Lean Tween <br/>
 
 <h2>Contributing Guide</h2>
 If you want to contribute to the website then go to the website branch.

@@ -10,8 +10,12 @@ Aura 2 <br/>
 Lean Tween <br/>
 
 <h2>Contributing Guide</h2>
-If you want to contribute to the website then go to the website branch.
-To contribute to the game go to the source branch.
+If you want to contribute to the website then go to the website branch. <br/>
+To contribute to the game go to the source branch. <br/>
+<br/>
+The website branch is a simple branch in terms of organiztion and complexity. You have an index.html file and a css file. You also have a folder containing downloads for the game. <br/>
+<br/>
+The source branch contains all the code, 3d assets, images, sprites, and scenes. This branch is where you go if you need to modify or fork the game itself. The organization is a little more complex but I have named folders in such a way that makes it easier to find files.
 
 <h2>Bug Reporting</h2>
 To report a bug go to the issues tab and report the bug you are having. I will try to fix the bug. Try to be as descriptive as possible to help narrow down the bug on my end.

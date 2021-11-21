@@ -18,7 +18,7 @@ public class CapedWaveSpawner : BaseWaveSpawner, IWaveSpawner
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
             return;
@@ -28,7 +28,7 @@ public class CapedWaveSpawner : BaseWaveSpawner, IWaveSpawner
     private void Update()
     {
         SubtractWaveTime();
-        if(currentTimeBetweenWaves <= 0 && _currentWave <= _maxWaves)
+        if (currentTimeBetweenWaves <= 0 && _currentWave <= _maxWaves && currentEnemiesAlive == 0)
         {
             SpawnCaped();
         }

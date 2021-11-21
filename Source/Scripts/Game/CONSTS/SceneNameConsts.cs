@@ -8,6 +8,7 @@ public static class SceneNameConsts
     public static string LEVEL_2_NAME = "Level2";
     public static string LEVEL_3_NAME = "Level3";
     public static string LEVEL_4_NAME = "Level4";
+    public static string LEVEL_5_NAME = "Level5";
 
     public static void LoadLevel(string name)
     {

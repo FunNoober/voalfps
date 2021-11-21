@@ -18,7 +18,10 @@ The website branch is a simple branch in terms of organiztion and complexity. Yo
 The source branch contains all the code, 3d assets, images, sprites, and scenes. This branch is where you go if you need to modify or fork the game itself. The organization is a little more complex but I have named folders in such a way that makes it easier to find files.
 
 <h2>Bug Reporting</h2>
-To report a bug go to the issues tab and report the bug you are having. I will try to fix the bug. Try to be as descriptive as possible to help narrow down the bug on my end.
+To report a bug go to the issues tab and report the bug you are having. I will try to fix the bug. Try to be as descriptive as possible to help narrow down the bug on my end. <br/>
+<br/>
+Example: <br/>
+I would like to report a bug in the main menu. I press the play button for level 1 but it loads the level 4 menu. I have tried other buttons and they all seem to be working. The error could be that the button is configured wrong.
 
 <h2>Levels</h2>
 If you want to work on a level then follow the descriptions for levels below. <br/>
